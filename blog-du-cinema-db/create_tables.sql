@@ -1,6 +1,6 @@
-create database if not exists blogducinema;
+create database if not exists blog_du_cinema;
 
-use blogducinema;
+use blog_du_cinema;
 
 create table if not exists user (
     user_id int primary key,
