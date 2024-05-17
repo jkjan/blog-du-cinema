@@ -11,6 +11,7 @@ import MovieInfoBase from "./MovieInfoBase.vue";
 import MoviePostReader from "../movie_forum/MoviePostReader.vue";
 import MovieDictionary from "./MovieDictionary.vue";
 import { ComponentData } from "../../types.ts";
+import axios from "axios"
 
 const componentData: Ref<ComponentData> = ref({
   category: "",
@@ -18,6 +19,13 @@ const componentData: Ref<ComponentData> = ref({
   content: [],
   nowKey: "",
 });
+
+// TODO: /info/category 에서 라벨 전체 받아오기
+axios.get("http://127.0.0.1:8080/info/category").then(response => {
+  if (response.status === 200) {
+    console.log(response.data);
+  }
+})
 
 componentData.value.category = movieInfoCategories[0].category;
 
@@ -28,6 +36,8 @@ watch(
   },
 );
 
+
+// TODO: /info/post/{label_id} 에서 라벨 별로 post들 받아오기
 watch(
   () => componentData.value.category,
   (newCategory: string) => {

@@ -29,7 +29,7 @@ create table if not exists post_label
     post_id       int null
 );
 
-create table if not exists users
+create table if not exists user
 (
     user_id     int 
         primary key,

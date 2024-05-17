@@ -1,4 +1,4 @@
-import { Content } from "./info_dummy.ts";
+import { Content } from "../../types.ts";
 
 const content: Content = {
   description:

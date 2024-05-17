@@ -37,7 +37,7 @@ dependencies {
 
     runtimeOnly("com.mysql:mysql-connector-j")
 
-    testRuntimeOnly("com.h2database:h2")
+    testRuntimeOnly("com.h2database:h2:1.4.200")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 
     testImplementation("org.springframework.restdocs:spring-restdocs-asciidoctor")

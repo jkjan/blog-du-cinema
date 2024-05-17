@@ -10,5 +10,3 @@ include::{snippets}/info/post/http-request.adoc[]
 include::{snippets}/info/post/request-body.adoc[]
 
 include::{snippets}/info/post/response-body.adoc[]
-
-
