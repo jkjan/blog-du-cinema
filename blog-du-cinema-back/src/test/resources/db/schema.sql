@@ -13,7 +13,7 @@ create table if not exists post
 (
     post_id      int 
         primary key,
-    user_id      int                                not null,
+    user_data_id      int                                not null,
     title        varchar(256)                       not null,
     content_text text                               null,
     content_html text                               null,
@@ -29,9 +29,9 @@ create table if not exists post_label
     post_id       int null
 );
 
-create table if not exists user
+create table if not exists user_data
 (
-    user_id     int 
+    user_data_id     int 
         primary key,
     username    varchar(56)                        not null,
     password    varchar(56)                        not null,

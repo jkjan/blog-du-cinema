@@ -1,9 +1,6 @@
 package com.jun.blogducinemaback.entity
 
 import jakarta.persistence.*
-import org.springframework.data.annotation.CreatedDate
-import org.springframework.data.annotation.LastModifiedDate
-import java.time.LocalDateTime
 
 @Entity
 class Post (
@@ -16,8 +13,8 @@ class Post (
     var postId: Int? = null
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
-    var user: User? = null
+    @JoinColumn(name = "user_data_id")
+    var userData: UserData? = null
 
     @OneToMany(cascade = [(CascadeType.ALL)], orphanRemoval = true, fetch = FetchType.LAZY)
     @JoinTable(

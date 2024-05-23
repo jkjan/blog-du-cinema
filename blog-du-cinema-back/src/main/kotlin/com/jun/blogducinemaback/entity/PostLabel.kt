@@ -2,7 +2,6 @@ package com.jun.blogducinemaback.entity
 
 import jakarta.persistence.*
 
-@Table(name = "post_label")
 @Entity
 class PostLabel(
     @Column(name = "label_id")

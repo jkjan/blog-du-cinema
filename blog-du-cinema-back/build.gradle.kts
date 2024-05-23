@@ -36,6 +36,8 @@ dependencies {
     implementation("com.google.code.gson:gson:2.10.1")
 
     runtimeOnly("com.mysql:mysql-connector-j")
+    runtimeOnly("org.postgresql:postgresql")
+
 
     testRuntimeOnly("com.h2database:h2:1.4.200")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
