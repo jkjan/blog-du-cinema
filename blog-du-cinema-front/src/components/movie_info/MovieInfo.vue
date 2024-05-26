@@ -2,18 +2,16 @@
 import MovieInfoSidebar from "./MovieInfoSidebar.vue";
 import { Ref, ref, watch } from "vue";
 
-import {
-  contentForIndexKey, movieInfoCategories,
-} from "./info_dummy.ts";
+import { movieInfoCategories } from "./info_dummy.ts";
 import MovieInfoBase from "./MovieInfoBase.vue";
 import MoviePostReader from "../movie_forum/MoviePostReader.vue";
 import MovieDictionary from "./MovieDictionary.vue";
-import {ComponentData, Label} from "../../types.ts";
-import axios, {head} from "axios"
+import { ComponentData, Label } from "../../types.ts";
+import axios from "axios";
 
 const labelsForCategory: {
-  [category: string]: Label[]
-} = {}
+  [category: string]: Label[];
+} = {};
 
 const componentData: Ref<ComponentData> = ref({
   category: "",
@@ -24,53 +22,52 @@ const componentData: Ref<ComponentData> = ref({
 
 const getCategory = () => {
   // TODO: /info/category 에서 라벨 전체 받아오기
-  axios.get("http://211.197.212.209:8080/info/category").then(response => {
+  axios.get("http://211.197.212.209:8080/info/category").then((response) => {
     if (response.status === 200) {
-      response.data.forEach(item => {
+      response.data.forEach((item: Label) => {
         const { category, labelId, labelNum, labelName } = item;
 
         // Check if category exists in labelsForCategory
-        if (!labelsForCategory[category]) {
-          labelsForCategory[category] = [];
+        if (!labelsForCategory[category!]) {
+          labelsForCategory[category!] = [];
         }
 
-        labelsForCategory[category].push({
+        labelsForCategory[category!].push({
           labelId,
           labelNum,
-          labelName
+          labelName,
         });
       });
 
       console.log(labelsForCategory);
-      componentData.value.category = movieInfoCategories[0].name
+      componentData.value.category = movieInfoCategories[0].name;
     }
   });
-}
+};
 
 const getPost = (labelIndex: number) => {
-  console.log(`카테고리 ${componentData.value.category} 라벨 변경 ${labelIndex}`)
-  const labelId = componentData.value.labels[labelIndex].labelId
+  console.log(
+    `카테고리 ${componentData.value.category} 라벨 변경 ${labelIndex}`,
+  );
+  console.log(componentData.value.labels[labelIndex]);
+  const labelId = componentData.value.labels[labelIndex].labelId;
 
-  if (labelId === false) {
-    componentData.value.post = [];
-  }
-  else {
-    console.log(componentData.value.labels[labelIndex])
-    axios.get("http://211.197.212.209:8080/info/post/" + labelId).then(response => {
+  axios
+    .get("http://211.197.212.209:8080/info/post/" + labelId)
+    .then((response) => {
       if (response.status === 200) {
         componentData.value.post = response.data;
       } else {
         componentData.value.post = [];
       }
-    })
-  }
-}
+    });
+};
 
 watch(
   () => componentData.value.nowLabelIndex,
   (newLabelIndex: number) => {
     if (newLabelIndex >= 0) {
-      getPost(newLabelIndex)
+      getPost(newLabelIndex);
     }
   },
 );
@@ -80,12 +77,11 @@ watch(
   (newCategory: string) => {
     componentData.value.labels = labelsForCategory[newCategory];
     componentData.value.nowLabelIndex = 0;
-    getPost(0)
+    getPost(0);
   },
 );
 
-getCategory()
-
+getCategory();
 </script>
 
 <template>
@@ -94,7 +90,9 @@ getCategory()
   >
     <template #sidebar v-if="componentData.labels.length > 0">
       <MovieInfoSidebar
-        @changeIndexKey="(nowIndex: number) => (componentData.nowLabelIndex = nowIndex)"
+        @changeNowIndex="
+          (nowIndex: number) => (componentData.nowLabelIndex = nowIndex)
+        "
         :labels="componentData.labels"
       />
     </template>

@@ -1,4 +1,5 @@
 interface Label {
+  category?: string;
   labelId: number;
   labelNum: string;
   labelName: string;

@@ -2,7 +2,7 @@
 import { Label } from "../../types.ts";
 
 defineProps<{ labels: Label[] }>();
-defineEmits<{ (e: "changeIndexKey", key: string): void }>();
+defineEmits<{ (e: "changeNowIndex", nowIndex: number): void }>();
 </script>
 <template>
   <v-sheet rounded="lg">
@@ -11,7 +11,7 @@ defineEmits<{ (e: "changeIndexKey", key: string): void }>();
         v-for="(label, i) in labels"
         :key="label.labelId"
         :title="label.labelName"
-        @click="$emit('changeIndexKey', i)"
+        @click="$emit('changeNowIndex', i)"
         link
       ></v-list-item>
     </v-list>
