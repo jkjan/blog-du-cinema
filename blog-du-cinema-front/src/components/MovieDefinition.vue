@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import MoviePostReader from "./movie_forum/MoviePostReader.vue";
-import content from "./movie_info/definition_dummy.ts";
+import post from "./movie_info/definition_dummy.ts";
 </script>
 
 <template>
-  <MoviePostReader :content="content" />
+  <MoviePostReader :post="[post]" />
 </template>
 
 <style scoped></style>

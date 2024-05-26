@@ -2,11 +2,9 @@ package com.jun.blogducinemaback.controllers
 
 import com.jun.blogducinemaback.dto.InfoLabelDTO
 import com.jun.blogducinemaback.dto.InfoPostDTO
-import com.jun.blogducinemaback.entity.Label
-import com.jun.blogducinemaback.entity.Post
 import com.jun.blogducinemaback.services.InfoService
 import org.slf4j.LoggerFactory
-import org.slf4j.event.Level
+import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
@@ -21,17 +19,25 @@ class InfoController(val infoService: InfoService) {
     fun getInfoLabels(): ResponseEntity<List<InfoLabelDTO>> {
         val infoLabels = infoService.getInfoLabels()
 
-        logger.atLevel(Level.DEBUG)
         logger.debug("Printing info labels")
         logger.debug(infoLabels.toString())
 
-        lateinit var response: ResponseEntity<List<InfoLabelDTO>>
+        lateinit var status: HttpStatus
+        val headers = HttpHeaders()
+        val body: List<InfoLabelDTO>?
 
         if (infoLabels.isNullOrEmpty()) {
-           response = ResponseEntity(null, HttpStatus.BAD_REQUEST)
+            status = HttpStatus.NO_CONTENT
+            body = null
         } else {
-            response = ResponseEntity(infoLabels, HttpStatus.OK)
+            status = HttpStatus.OK
+            body = infoLabels
         }
+
+        val response = ResponseEntity
+                .status(status)
+                .headers(headers)
+                .body(body)
 
         return response
     }
@@ -39,13 +45,23 @@ class InfoController(val infoService: InfoService) {
     @GetMapping("info/post/{labelId}")
     fun getPostsForInfoLabel(@PathVariable labelId: Int): ResponseEntity<List<InfoPostDTO>> {
         val posts = infoService.getPostsForInfoLabel(labelId)
-        lateinit var response: ResponseEntity<List<InfoPostDTO>>
+
+        lateinit var status: HttpStatus
+        val headers = HttpHeaders()
+        val body: List<InfoPostDTO>?
 
         if (posts.isNullOrEmpty()) {
-            response = ResponseEntity(null, HttpStatus.BAD_REQUEST)
+            status = HttpStatus.NO_CONTENT
+            body = null
         } else {
-            response = ResponseEntity(posts, HttpStatus.OK)
+            status = HttpStatus.OK
+            body = posts
         }
+
+        val response = ResponseEntity
+            .status(status)
+            .headers(headers)
+            .body(body)
 
         return response
     }

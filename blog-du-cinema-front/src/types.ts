@@ -1,18 +1,19 @@
-interface Index {
-  key: string;
-  label: string;
+interface Label {
+  labelId: number;
+  labelNum: string;
+  labelName: string;
 }
 
-interface Content {
-  description: string;
-  vocab?: string;
+interface Post {
+  title: string;
+  contentHtml?: string;
 }
 
 interface ComponentData {
   category: string;
-  indexes: Index[];
-  content: Content[];
-  nowKey: string;
+  labels: Label[];
+  post: Post[];
+  nowLabelIndex: number;
 }
 
-export type { Index, Content, ComponentData };
+export type { Label, Post, ComponentData };

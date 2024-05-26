@@ -1,11 +1,14 @@
 <script setup lang="ts">
-import { Content } from "../../types.ts";
+import { Post } from "../../types.ts";
 
-defineProps<{ content: Content }>();
+defineProps<{ post: Post[] }>();
 </script>
 
 <template>
-  <p>{{ content.description }}</p>
+  <div v-for="(c, i) in post">
+    <h3>{{ c.title }}</h3>
+    {{ c.contentHtml }}
+  </div>
 </template>
 
 <style scoped></style>

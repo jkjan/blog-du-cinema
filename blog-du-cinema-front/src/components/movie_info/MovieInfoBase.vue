@@ -10,7 +10,7 @@ defineEmits<{ (e: "changeCategory", category: string): void }>();
       <v-tab
         v-for="(m, i) in movieInfoCategories"
         :key="i"
-        @click="$emit('changeCategory', m.category)"
+        @click="$emit('changeCategory', m.name)"
       >
         {{ m.name }}
       </v-tab>

@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import MovieWord from "./MovieWord.vue";
-import { Content } from "../../types.ts";
+import { Post } from "../../types.ts";
 
-defineProps<{ words: Content[] }>();
+defineProps<{ words: Post[] }>();
 </script>
 
 <template>

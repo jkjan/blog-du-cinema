@@ -4,10 +4,10 @@ import com.jun.blogducinemaback.entity.Post
 
 class InfoPostDTO(post: Post) {
     var title: String? = null
-    var contentText: String? = null
+    var contentHtml: String? = null
 
     init {
         this.title = post.title
-        this.contentText = post.contentText
+        this.contentHtml = post.contentHtml
     }
 }

@@ -1,4 +1,4 @@
-import { Content, Index } from "../../types.ts";
+import { Post, Label } from "../../types.ts";
 
 const movieInfoCategories = [
   { name: "영화의 역사", category: "history" },
@@ -8,7 +8,7 @@ const movieInfoCategories = [
   { name: "단어 사전", category: "dictionary" },
 ];
 
-const indexForCategory: { [m: string]: Index[] } = {
+const indexForCategory: { [m: string]: Label[] } = {
   history: [
     { key: "a", label: "History 1" },
     { key: "b", label: "History 2" },
@@ -37,43 +37,43 @@ const indexForCategory: { [m: string]: Index[] } = {
 };
 
 const contentForIndexKey: {
-  [indexKey: string]: Content[];
+  [indexKey: string]: Post[];
 } = {
   // 역사
-  a: [{ description: "역사 설명 1" }],
-  b: [{ description: "역사 설명 2" }],
-  c: [{ description: "역사 설명 3" }],
+  a: [{ title: "역사 설명 1" }],
+  b: [{ title: "역사 설명 2" }],
+  c: [{ title: "역사 설명 3" }],
 
   // 장르
-  d: [{ description: "장르 설명 1" }],
-  e: [{ description: "장르 설명 2" }],
-  f: [{ description: "장르 설명 3" }],
+  d: [{ title: "장르 설명 1" }],
+  e: [{ title: "장르 설명 2" }],
+  f: [{ title: "장르 설명 3" }],
 
   // 방법론
-  m1: [{ description: "방법론 설명 1" }],
-  m2: [{ description: "방법론 설명 2" }],
-  m3: [{ description: "방법론 설명 3" }],
+  m1: [{ title: "방법론 설명 1" }],
+  m2: [{ title: "방법론 설명 2" }],
+  m3: [{ title: "방법론 설명 3" }],
 
   // 사이트
-  s1: [{ description: "사이트 설명 1" }],
-  s2: [{ description: "사이트 설명 2" }],
-  s3: [{ description: "사이트 설명 3" }],
+  s1: [{ title: "사이트 설명 1" }],
+  s2: [{ title: "사이트 설명 2" }],
+  s3: [{ title: "사이트 설명 3" }],
 
   // 사전
   g: [
-    { vocab: "Word G1", description: "Example G1" },
-    { vocab: "Word G2", description: "Example G2" },
-    { vocab: "Word G3", description: "Example G3" },
+    { contentText: "Word G1", title: "Example G1" },
+    { contentText: "Word G2", title: "Example G2" },
+    { contentText: "Word G3", title: "Example G3" },
   ],
   h: [
-    { vocab: "Word H1", description: "Example H1" },
-    { vocab: "Word H2", description: "Example H2" },
-    { vocab: "Word H3", description: "Example H3" },
+    { contentText: "Word H1", title: "Example H1" },
+    { contentText: "Word H2", title: "Example H2" },
+    { contentText: "Word H3", title: "Example H3" },
   ],
   i: [
-    { vocab: "Word I1", description: "Example I1" },
-    { vocab: "Word I2", description: "Example I2" },
-    { vocab: "Word I3", description: "Example I3" },
+    { contentText: "Word I1", title: "Example I1" },
+    { contentText: "Word I2", title: "Example I2" },
+    { contentText: "Word I3", title: "Example I3" },
   ],
 };
 
