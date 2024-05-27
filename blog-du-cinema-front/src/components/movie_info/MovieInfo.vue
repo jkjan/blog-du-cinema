@@ -22,7 +22,7 @@ const componentData: Ref<ComponentData> = ref({
 
 const getCategory = () => {
   // TODO: /info/category 에서 라벨 전체 받아오기
-  axios.get("http://211.197.212.209:8080/info/category").then((response) => {
+  info.then((response) => {
     if (response.status === 200) {
       response.data.forEach((item: Label) => {
         const { category, labelId, labelNum, labelName } = item;
