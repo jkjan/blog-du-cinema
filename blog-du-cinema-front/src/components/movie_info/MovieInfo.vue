@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import MovieInfoSidebar from "./MovieInfoSidebar.vue";
 import { Ref, ref, watch } from "vue";
-
 import { movieInfoCategories } from "./info_dummy.ts";
 import MovieInfoBase from "./MovieInfoBase.vue";
 import MoviePostReader from "../movie_forum/MoviePostReader.vue";
 import MovieDictionary from "./MovieDictionary.vue";
 import { ComponentData, Label } from "../../types.ts";
-import axios from "axios";
+import {baseApiService} from "../../api/base.ts";
+import {HttpStatusCode} from "axios";
 
 const labelsForCategory: {
   [category: string]: Label[];
@@ -21,13 +21,11 @@ const componentData: Ref<ComponentData> = ref({
 });
 
 const getCategory = () => {
-  // TODO: /info/category 에서 라벨 전체 받아오기
-  info.then((response) => {
-    if (response.status === 200) {
+  baseApiService("category").list().then((response) => {
+    if (response.status === HttpStatusCode.Ok) {
       response.data.forEach((item: Label) => {
         const { category, labelId, labelNum, labelName } = item;
 
-        // Check if category exists in labelsForCategory
         if (!labelsForCategory[category!]) {
           labelsForCategory[category!] = [];
         }
@@ -52,12 +50,10 @@ const getPost = (labelIndex: number) => {
   console.log(componentData.value.labels[labelIndex]);
   const labelId = componentData.value.labels[labelIndex].labelId;
 
-  axios
-    .get("http://211.197.212.209:8080/info/post/" + labelId)
-    .then((response) => {
-      if (response.status === 200) {
+  baseApiService("post").get(labelId).then((response) => {
+      if (response.status === HttpStatusCode.Ok)
         componentData.value.post = response.data;
-      } else {
+      else {
         componentData.value.post = [];
       }
     });

@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.RequestHeader
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
@@ -16,20 +17,22 @@ class InfoController(val infoService: InfoService) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
     @GetMapping("/info/category")
-    fun getInfoLabels(): ResponseEntity<List<InfoLabelDTO>> {
+    fun getInfoLabels(@RequestHeader("Origin") origin: String): ResponseEntity<List<InfoLabelDTO>> {
         val infoLabels = infoService.getInfoLabels()
 
-        logger.debug("Printing info labels")
-        logger.debug(infoLabels.toString())
+        logger.info("request origin: $origin")
+        logger.info("All labels requested for info.")
 
         lateinit var status: HttpStatus
         val headers = HttpHeaders()
         val body: List<InfoLabelDTO>?
 
         if (infoLabels.isNullOrEmpty()) {
+            logger.info("No labels in Label table or failed to retrieve from db.")
             status = HttpStatus.NO_CONTENT
             body = null
         } else {
+            logger.info("Found ${infoLabels.size} labels in Label table.")
             status = HttpStatus.OK
             body = infoLabels
         }

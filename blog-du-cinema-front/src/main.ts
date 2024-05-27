@@ -7,8 +7,6 @@ import vuetify from "./plugins/vuetify.ts";
 import App from "./App.vue";
 import { createWebHistory, createRouter } from "vue-router";
 import { routes } from "./plugins/router.ts";
-import axios from 'axios'
-import VueAxios from 'vue-axios'
 
 const router = createRouter({
   history: createWebHistory(),
@@ -16,8 +14,7 @@ const router = createRouter({
 });
 
 const app = createApp(App)
+
 app.use(vuetify)
 app.use(router)
-app.use(VueAxios, axios)
-app.provide('axios', app.config.globalProperties.axios)
 app.mount("#app");
