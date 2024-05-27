@@ -13,8 +13,6 @@ class CorsConfig: WebMvcConfigurer {
             .addMapping("/**")
             .allowedOrigins("http://127.0.0.1:5173")
             .allowedOrigins("http://localhost:5173")
-            .allowedMethods("*")
-            .allowCredentials(true)
             .maxAge(3000)
     }
 }
