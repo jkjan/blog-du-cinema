@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Post } from "../../types.ts";
+import { Post } from "../../app/types.ts";
 
 defineProps<{ post: Post[] }>();
 </script>

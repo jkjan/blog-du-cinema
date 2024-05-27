@@ -1,12 +1,12 @@
 import { createApp } from "vue";
 
 // Vuetify
-import vuetify from "./plugins/vuetify.ts";
+import vuetify from "./vuetify.ts";
 
 // Components
 import App from "./App.vue";
 import { createWebHistory, createRouter } from "vue-router";
-import { routes } from "./plugins/router.ts";
+import { routes } from "./router.ts";
 
 const router = createRouter({
   history: createWebHistory(),

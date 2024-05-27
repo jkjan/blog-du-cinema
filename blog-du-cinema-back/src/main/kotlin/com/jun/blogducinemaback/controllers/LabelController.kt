@@ -2,7 +2,7 @@ package com.jun.blogducinemaback.controllers
 
 import com.jun.blogducinemaback.dto.InfoLabelDTO
 import com.jun.blogducinemaback.dto.InfoPostDTO
-import com.jun.blogducinemaback.services.InfoService
+import com.jun.blogducinemaback.services.LabelService
 import org.slf4j.LoggerFactory
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
@@ -13,12 +13,12 @@ import org.springframework.web.bind.annotation.RequestHeader
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-class InfoController(val infoService: InfoService) {
+class LabelController(val labelService: LabelService) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
-    @GetMapping("/info/category")
-    fun getInfoLabels(@RequestHeader("Origin") origin: String): ResponseEntity<List<InfoLabelDTO>> {
-        val infoLabels = infoService.getInfoLabels()
+    @GetMapping("/label/info")
+    fun getInfoLabels(@RequestHeader("Origin") origin: String?): ResponseEntity<List<InfoLabelDTO>> {
+        val labelService = labelService.getInfoLabels()
 
         logger.info("request origin: $origin")
         logger.info("All labels requested for info.")
@@ -27,14 +27,14 @@ class InfoController(val infoService: InfoService) {
         val headers = HttpHeaders()
         val body: List<InfoLabelDTO>?
 
-        if (infoLabels.isNullOrEmpty()) {
+        if (labelService.isNullOrEmpty()) {
             logger.info("No labels in Label table or failed to retrieve from db.")
             status = HttpStatus.NO_CONTENT
             body = null
         } else {
-            logger.info("Found ${infoLabels.size} labels in Label table.")
+            logger.info("Found ${labelService.size} labels in Label table.")
             status = HttpStatus.OK
-            body = infoLabels
+            body = labelService
         }
 
         val response = ResponseEntity
@@ -45,9 +45,9 @@ class InfoController(val infoService: InfoService) {
         return response
     }
 
-    @GetMapping("info/post/{labelId}")
-    fun getPostsForInfoLabel(@PathVariable labelId: Int): ResponseEntity<List<InfoPostDTO>> {
-        val posts = infoService.getPostsForInfoLabel(labelId)
+    @GetMapping("/label/{labelId}/post")
+    fun getPostsForLabel(@PathVariable labelId: Int): ResponseEntity<List<InfoPostDTO>> {
+        val posts = labelService.getPostsForLabel(labelId)
 
         lateinit var status: HttpStatus
         val headers = HttpHeaders()

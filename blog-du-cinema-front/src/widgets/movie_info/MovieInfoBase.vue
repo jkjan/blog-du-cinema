@@ -1,18 +1,18 @@
 <script setup lang="ts">
-import { movieInfoCategories } from "./info_dummy.ts";
-
-defineEmits<{ (e: "changeCategory", category: string): void }>();
+defineProps<{ categories: string[] }>();
+const model = defineModel()
+let activeTab: number = 0;
 </script>
 
 <template>
   <v-card>
-    <v-tabs align-tabs="title">
+    <v-tabs align-tabs="title" v-model="activeTab">
       <v-tab
-        v-for="(m, i) in movieInfoCategories"
+        v-for="(m, i) in categories"
         :key="i"
-        @click="$emit('changeCategory', m.name)"
+        @click="model = m"
       >
-        {{ m.name }}
+        {{ m }}
       </v-tab>
     </v-tabs>
 

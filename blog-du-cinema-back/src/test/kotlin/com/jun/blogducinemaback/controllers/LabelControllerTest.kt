@@ -3,7 +3,7 @@ package com.jun.blogducinemaback.controllers
 import com.google.gson.Gson
 import com.jun.blogducinemaback.dto.InfoLabelDTO
 import com.jun.blogducinemaback.dto.InfoPostDTO
-import com.jun.blogducinemaback.services.InfoService
+import com.jun.blogducinemaback.services.LabelService
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -16,12 +16,9 @@ import org.springframework.restdocs.RestDocumentationContextProvider
 import org.springframework.restdocs.RestDocumentationExtension
 import org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document
 import org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration
-import org.springframework.restdocs.mockmvc.MockMvcRestDocumentationConfigurer
-import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler
 import org.springframework.test.context.jdbc.Sql
 import org.springframework.test.context.junit.jupiter.SpringExtension
 import org.springframework.test.web.servlet.MockMvc
-import org.springframework.test.web.servlet.MockMvcBuilder
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import org.springframework.test.web.servlet.setup.DefaultMockMvcBuilder
@@ -33,14 +30,14 @@ import java.nio.charset.StandardCharsets
 @AutoConfigureMockMvc
 @Sql("classpath:db/data.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_CLASS)
 @ExtendWith(RestDocumentationExtension::class, SpringExtension::class)
-class InfoControllerTest {
-    private val logger = LoggerFactory.getLogger(InfoControllerTest::class.java)!!
+class LabelControllerTest {
+    private val logger = LoggerFactory.getLogger(LabelControllerTest::class.java)!!
 
     @Autowired
     lateinit var mockMvc: MockMvc
 
     @Autowired
-    lateinit var infoService: InfoService
+    lateinit var labelService: LabelService
 
     @BeforeEach
     fun setUp(webApplicationContext: WebApplicationContext, restDocumentation: RestDocumentationContextProvider) {
@@ -54,15 +51,15 @@ class InfoControllerTest {
     @Test
     fun getInfoLabels() {
         val response = mockMvc.perform(
-            get("/info/category")
+            get("/label/info")
         )
             .andExpect(status().isOk)
-            .andDo(document("info/category"))
+            .andDo(document("label/info"))
             .andReturn()
 
         logger.debug("response ${response.response.contentAsString}")
         val body = Gson().fromJson(response.response.contentAsString, Array<InfoLabelDTO>::class.java)
-        logger.debug("body ${body}")
+        logger.debug("body {}", body)
 
         assertTrue(body.size == 35)
 
@@ -77,12 +74,12 @@ class InfoControllerTest {
     }
 
     @Test
-    fun getPostsForInfoLabel() {
+    fun getPostsForLabel() {
         val response = mockMvc.perform(
-            get("/info/post/20")
+            get("/label/20/post")
         )
             .andExpect(status().isOk)
-            .andDo(document("info/post"))
+            .andDo(document("label/post"))
             .andReturn()
 
         val body = Gson().fromJson(response.response.contentAsString, Array<InfoPostDTO>::class.java)
