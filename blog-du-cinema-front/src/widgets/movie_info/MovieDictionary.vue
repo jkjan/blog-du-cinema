@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import MovieWord from "./MovieWord.vue";
-import { Post } from "../../types.ts";
+import MovieWord from "../../entities/post/MovieWord.vue";
+import { Post } from "../../app/types.ts";
 
 defineProps<{ words: Post[] }>();
 </script>

@@ -1,0 +1,8 @@
+// snippet 경로를 못 읽어들이는 버그로 인해 추가
+ifndef::snippets[]
+:snippets: ./build/generated-snippets
+endif::[]
+
+include::{snippets}/label/info/http-request.adoc[]
+
+include::{snippets}/label/info/response-body.adoc[]

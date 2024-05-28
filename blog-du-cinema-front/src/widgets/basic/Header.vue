@@ -1,5 +1,9 @@
 <script setup lang="ts">
-import { menu } from "./menu";
+const menu = [
+  { name: "영화란?", path: "/what-is-movie" },
+  { name: "영화 정보", path: "/info" },
+  { name: "게시판", path: "/forum" },
+];
 </script>
 
 <template>

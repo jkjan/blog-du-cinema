@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { Post } from "../../types.ts";
+import { Post } from "../../app/types.ts";
 
 defineProps<{ word: Post }>();
 </script>
 
 <template>
-  <h3>{{ word.contentText }}</h3>
-  <p>{{ word.title }}</p>
+  <h3>{{ word.title }}</h3>
+  <p>{{ word.contentHtml }}</p>
 </template>
 
 <style scoped></style>

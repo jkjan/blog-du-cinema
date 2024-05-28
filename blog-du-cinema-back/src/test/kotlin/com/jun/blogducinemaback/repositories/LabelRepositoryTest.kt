@@ -10,12 +10,12 @@ import org.springframework.test.context.jdbc.Sql
 @DataJpaTest
 @AutoConfigureTestDatabase
 @Sql("classpath:db/data.sql")
-class InfoRepositoryTest(@Autowired val infoRepository: InfoRepository) {
+class LabelRepositoryTest(@Autowired val labelRepository: LabelRepository) {
 
     @Test
     fun getInfoLabels() {
         val excludingCategories = listOf("forum")
-        val infoLabels = infoRepository.findLabelByCategoryNotIn(excludingCategories)
+        val infoLabels = labelRepository.findLabelByCategoryNotIn(excludingCategories)
         assertFalse(infoLabels.isNullOrEmpty())
 
         val categories = infoLabels!!.map { it.category }.toSet()
@@ -24,8 +24,8 @@ class InfoRepositoryTest(@Autowired val infoRepository: InfoRepository) {
     }
 
     @Test
-    fun getPostsForInfoLabel() {
-        val label = infoRepository.findById(20);
+    fun getPostsForLabel() {
+        val label = labelRepository.findById(20);
 
         assertTrue(label.isPresent)
 

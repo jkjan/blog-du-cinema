@@ -1,13 +1,14 @@
 <script setup lang="ts">
-import MovieInfoSidebar from "./MovieInfoSidebar.vue";
+import MovieInfoSidebar from "../widgets/Sidebar.vue";
 import { Ref, ref, watch } from "vue";
+import MovieInfoBase from "../widgets/movie_info/MovieInfoBase.vue";
+import MoviePostReader from "../entities/post/MoviePostReader.vue";
+import MovieDictionary from "../widgets/movie_info/MovieDictionary.vue";
+import { ComponentData, Label } from "../app/types.ts";
+import {HttpStatusCode} from "axios";
+import {labelAPI} from "../entities/label/labelAPI.ts";
 
-import { movieInfoCategories } from "./info_dummy.ts";
-import MovieInfoBase from "./MovieInfoBase.vue";
-import MoviePostReader from "../movie_forum/MoviePostReader.vue";
-import MovieDictionary from "./MovieDictionary.vue";
-import { ComponentData, Label } from "../../types.ts";
-import axios from "axios";
+let categories: string[] = []
 
 const labelsForCategory: {
   [category: string]: Label[];
@@ -20,14 +21,12 @@ const componentData: Ref<ComponentData> = ref({
   nowLabelIndex: 0,
 });
 
-const getCategory = () => {
-  // TODO: /info/category 에서 라벨 전체 받아오기
-  axios.get("http://211.197.212.209:8080/info/category").then((response) => {
-    if (response.status === 200) {
+const getCategory = async () => {
+  await labelAPI.info.list().then((response) => {
+    if (response.status === HttpStatusCode.Ok) {
       response.data.forEach((item: Label) => {
-        const { category, labelId, labelNum, labelName } = item;
+        const {category, labelId, labelNum, labelName} = item;
 
-        // Check if category exists in labelsForCategory
         if (!labelsForCategory[category!]) {
           labelsForCategory[category!] = [];
         }
@@ -40,7 +39,8 @@ const getCategory = () => {
       });
 
       console.log(labelsForCategory);
-      componentData.value.category = movieInfoCategories[0].name;
+      categories = Object.keys(labelsForCategory)
+      componentData.value.category = categories[0];
     }
   });
 };
@@ -52,12 +52,10 @@ const getPost = (labelIndex: number) => {
   console.log(componentData.value.labels[labelIndex]);
   const labelId = componentData.value.labels[labelIndex].labelId;
 
-  axios
-    .get("http://211.197.212.209:8080/info/post/" + labelId)
-    .then((response) => {
-      if (response.status === 200) {
+  labelAPI.post.get(labelId).then((response) => {
+      if (response.status === HttpStatusCode.Ok)
         componentData.value.post = response.data;
-      } else {
+      else {
         componentData.value.post = [];
       }
     });
@@ -86,7 +84,8 @@ getCategory();
 
 <template>
   <MovieInfoBase
-    @changeCategory="(category: string) => (componentData.category = category)"
+      :categories="categories"
+      v-model="componentData.category"
   >
     <template #sidebar v-if="componentData.labels.length > 0">
       <MovieInfoSidebar
