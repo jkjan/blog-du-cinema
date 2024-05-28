@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Label } from "../app/types.ts";
+import { Label } from "../../app/types.ts";
 
 defineProps<{ labels: Label[] }>();
 defineEmits<{ (e: "changeNowIndex", nowIndex: number): void }>();

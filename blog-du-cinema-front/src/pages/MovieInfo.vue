@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import MovieInfoSidebar from "../widgets/Sidebar.vue";
+import MovieInfoSidebar from "../widgets/global/Sidebar.vue";
 import { Ref, ref, watch } from "vue";
 import MovieInfoBase from "../widgets/movie_info/MovieInfoBase.vue";
 import MoviePostReader from "../entities/post/MoviePostReader.vue";

@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import UserAvatar from "../../entities/user_data/UserAvatar.vue";
+import {userState} from "../../entities/user_data/userState.ts";
+
 const menu = [
   { name: "영화란?", path: "/what-is-movie" },
   { name: "영화 정보", path: "/info" },
@@ -18,6 +21,9 @@ const menu = [
       <v-btn v-for="(m, i) in menu" :key="i" :to="m.path">
         {{ m.name }}
       </v-btn>
+
+      <UserAvatar :userData="userState.nowUserData"/>
+
     </v-container>
   </v-app-bar>
 </template>
