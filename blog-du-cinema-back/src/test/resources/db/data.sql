@@ -35,11 +35,11 @@ values  (1, 1, '1890년대', '영화의 역사', '2024-05-16 16:59:25', '2024-05
         (34, 1, '편집', '영화 방법론', '2024-05-16 17:03:21', '2024-05-16 17:03:21'),
         (35, 2, '촬영', '영화 방법론', '2024-05-16 17:03:21', '2024-05-16 17:03:21');
 
-INSERT INTO post (post_id, user_data_id, title, content_text, content_html) VALUES (1, 1, 'title 1', 'text 1', 'html 1');
-INSERT INTO post (post_id, user_data_id, title, content_text, content_html) VALUES (2, 2, 'title 2', 'text 2', 'html 2');
-INSERT INTO post (post_id, user_data_id, title, content_text, content_html) VALUES (3, 3, 'title 3', 'text 3', 'html 3');
-INSERT INTO post (post_id, user_data_id, title, content_text, content_html) VALUES (4, 4, 'title 4', 'text 4', 'html 4');
-INSERT INTO post (post_id, user_data_id, title, content_text, content_html) VALUES (5, 5, 'title 5', 'text 5', 'html 5');
+INSERT INTO post (post_id, user_id, title, content_text, content_html) VALUES (1, 1, 'title 1', 'text 1', 'html 1');
+INSERT INTO post (post_id, user_id, title, content_text, content_html) VALUES (2, 2, 'title 2', 'text 2', 'html 2');
+INSERT INTO post (post_id, user_id, title, content_text, content_html) VALUES (3, 3, 'title 3', 'text 3', 'html 3');
+INSERT INTO post (post_id, user_id, title, content_text, content_html) VALUES (4, 4, 'title 4', 'text 4', 'html 4');
+INSERT INTO post (post_id, user_id, title, content_text, content_html) VALUES (5, 5, 'title 5', 'text 5', 'html 5');
 
 INSERT INTO post_label (label_id, post_id) VALUES (20, 1);
 INSERT INTO post_label (label_id, post_id) VALUES (20, 2);

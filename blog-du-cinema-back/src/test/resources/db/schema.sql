@@ -1,6 +1,6 @@
 create table if not exists label
 (
-    label_id    int 
+    label_id    int auto_increment
         primary key,
     label_num   int                                null,
     label_name  varchar(32)                        null,
@@ -11,10 +11,10 @@ create table if not exists label
 
 create table if not exists post
 (
-    post_id      int 
+    post_id      int auto_increment
         primary key,
-    user_data_id      int                                not null,
-    title        varchar(256)                       not null,
+    user_id      int                                null,
+    title        varchar(256)                        null,
     content_text text                               null,
     content_html text                               null,
     created_at   datetime default CURRENT_TIMESTAMP not null,
@@ -31,11 +31,18 @@ create table if not exists post_label
 
 create table if not exists user_data
 (
-    user_data_id     int 
+    user_id     int auto_increment
         primary key,
     username    varchar(56)                        not null,
-    password    varchar(56)                        not null,
+    password    varchar(128)                        not null,
+    authority_id int ,
     created_at  datetime default CURRENT_TIMESTAMP not null,
     modified_at datetime default CURRENT_TIMESTAMP not null
 );
 
+create table if not exists authority
+(
+    authority_id int auto_increment primary key ,
+    user_id int,
+    authority_name varchar(32) default 'ROLE_USER'
+);

@@ -2,6 +2,8 @@
 import { useVuelidate } from '@vuelidate/core'
 import {maxLength, required} from '@vuelidate/validators'
 import {computed, ref} from "vue";
+import {userAPI} from "../entities/user/userAPI.ts";
+import {HttpStatusCode} from "axios";
 
 const userData = ref({
   username: "",
@@ -21,6 +23,15 @@ const signUp = async (): Promise<void> => {
     console.log("Error")
   }
   else {
+    userAPI['sign-up'](userData.value.username, userData.value.password).then((response) => {
+      if (response.status === HttpStatusCode.Created) {
+        console.log("Success!")
+      }
+    }).catch((error) => {
+      if (error.response.status === HttpStatusCode.Conflict) {
+        alert("이미 있는 사용자입니다.")
+      }
+    })
     console.log("Done!")
   }
 }

@@ -4,11 +4,13 @@ import jakarta.persistence.*
 
 @Entity
 class PostLabel(
-    @Column(name = "label_id")
-    val labelId: Int,
+    @ManyToOne(cascade = [(CascadeType.ALL)])
+    @JoinColumn(name = "post_id")
+    var post: Post,
 
-    @Column(name = "post_id")
-    val postId: Int
+    @ManyToOne(cascade = [(CascadeType.ALL)])
+    @JoinColumn(name = "label_id")
+    var label: Label,
 ) {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

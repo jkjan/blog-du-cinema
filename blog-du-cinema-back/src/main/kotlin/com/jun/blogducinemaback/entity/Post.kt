@@ -4,23 +4,32 @@ import jakarta.persistence.*
 
 @Entity
 class Post (
-    var title: String,
-    var contentText: String,
-    var contentHtml: String
+    var title: String = "unknown",
+    var contentHtml: String = "unknown"
 ) : BaseTimeEntity() {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var postId: Int? = null
 
-    @ManyToOne
-    @JoinColumn(name = "user_data_id")
-    var userData: UserData? = null
+    @ManyToOne(cascade = [(CascadeType.ALL)], fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    var userData: UserData = UserData()
 
-    @OneToMany(cascade = [(CascadeType.ALL)], orphanRemoval = true, fetch = FetchType.LAZY)
-    @JoinTable(
-        name = "post_label",
-        joinColumns = [JoinColumn(name = "post_id")],
-        inverseJoinColumns = [JoinColumn(name = "label_id")]
-    )
-    var labels: MutableList<Label>? = null
+    var contentText: String = ""
+
+    @OneToMany(cascade = [(CascadeType.ALL)], mappedBy = "post", fetch = FetchType.LAZY)
+    var postLabel: MutableList<PostLabel> = mutableListOf()
+
+    fun addLabel(newLabel: Label) {
+        postLabel.add(PostLabel(this, newLabel))
+    }
+
+    fun addLabels(newLabels: List<Label>) {
+        newLabels.forEach {
+            label ->
+            val newPostLabel = PostLabel(this, label)
+            label.postLabel.add(newPostLabel)
+            postLabel.add(newPostLabel)
+        }
+    }
 }
