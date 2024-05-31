@@ -1,6 +1,7 @@
 package com.jun.blogducinemaback.controllers
 
 import com.jun.blogducinemaback.config.logger
+import com.jun.blogducinemaback.dto.Message
 import com.jun.blogducinemaback.dto.UserSignUpDTO
 import com.jun.blogducinemaback.services.UserService
 import jakarta.validation.Valid
@@ -23,20 +24,20 @@ class UserController(
         @Validated
         @RequestBody
         user: UserSignUpDTO,
-    ): ResponseEntity<String> {
+    ): ResponseEntity<Message> {
         logger.info("Controller: ${user.username} ${user.password}")
 
         val signUpSucceeded = userService.signUp(user)
         lateinit var status: HttpStatus
-        lateinit var body: String
+        lateinit var body: Message
 
         if (signUpSucceeded) {
             status = HttpStatus.CREATED
-            body = "회원 가입이 완료되었습니다."
+            body = Message("회원 가입이 완료되었습니다.")
         }
         else {
             status = HttpStatus.CONFLICT
-            body = "이미 있는 아이디입니다."
+            body = Message("이미 있는 아이디입니다.")
         }
 
        val response = ResponseEntity
