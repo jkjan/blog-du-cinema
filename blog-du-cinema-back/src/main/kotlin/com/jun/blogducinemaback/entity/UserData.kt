@@ -36,37 +36,30 @@ class UserData(
     }
 
     override fun getAuthorities(): MutableCollection<out GrantedAuthority> {
-        // TODO("Not yet implemented")
         return authorities
     }
 
     override fun getPassword(): String {
-        // TODO("Not yet implemented")
         return password
     }
 
     override fun getUsername(): String {
-        // TODO("Not yet implemented")
         return username
     }
 
     override fun isAccountNonExpired(): Boolean {
-        // TODO("Not yet implemented")
         return true
     }
 
     override fun isAccountNonLocked(): Boolean {
-        // TODO("Not yet implemented")
         return true
     }
 
     override fun isCredentialsNonExpired(): Boolean {
-        // TODO("Not yet implemented")
         return true
     }
 
     override fun isEnabled(): Boolean {
-        // TODO("Not yet implemented")
         return true
     }
 }

@@ -3,15 +3,13 @@ import {UserData} from "../../app/types.ts";
 import {userState} from "./userState.ts";
 
 defineProps<{userData: UserData}>()
-
 </script>
 
 <template>
-    <v-btn icon>
+    <v-btn icon="">
       <v-avatar color="info">
-        <div class="user-profile-image">
           <v-img
-              v-if="userState.isLoggedIn || userData.profileImage!"
+              v-if="userState.isLoggedIn && userData.profileImage!"
               :src="userData.profileImage"
               :alt="`Profile Image of ${userData.username}`"
           />
@@ -19,14 +17,13 @@ defineProps<{userData: UserData}>()
               v-else
               icon="mdi-account-circle"
           />
-        </div>
       </v-avatar>
 
       <v-menu activator="parent" rounded>
         <v-card>
           <v-card-text>
             <div class="mx-auto text-center">
-              <h3 v-if="!userState.isLoggedIn">{{ userData.username }}</h3>
+              <h3 v-if="userState.isLoggedIn">{{ userData.username }}</h3>
               <h3 v-else>안녕하세요!</h3>
 
               <!--
@@ -39,7 +36,7 @@ defineProps<{userData: UserData}>()
               <div class="user-action">
                 <div v-if="!userState.isLoggedIn">
                   <v-divider class="my-3"/>
-                  <v-btn variant="text" rounded> 로그인 </v-btn>
+                  <v-btn variant="text" rounded to="/sign-in"> 로그인 </v-btn>
                   <v-divider class="my-3"/>
                   <v-btn variant="text" rounded
                   to="/sign-up"> 회원 가입 </v-btn>

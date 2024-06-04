@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import UserAvatar from "../../entities/user_data/UserAvatar.vue";
-import {userState} from "../../entities/user_data/userState.ts";
+import UserAvatar from "../../entities/user/UserAvatar.vue";
+import {userState} from "../../entities/user/userState.ts";
 
 const menu = [
   { name: "영화란?", path: "/what-is-movie" },

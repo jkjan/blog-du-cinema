@@ -14,4 +14,14 @@ export const userAPI = {
       },
       config,
     ),
+
+    "sign-in": (username: string, password: string, config?: Config) =>
+        axios.post(
+            `${baseURL}/user/sign-in`,
+            {
+                username,
+                password,
+            },
+            config,
+        ),
 };
