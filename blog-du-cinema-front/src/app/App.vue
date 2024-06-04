@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import Header from "../widgets/basic/Header.vue";
-import Main from "../widgets/basic/Main.vue";
-import Footer from "../widgets/basic/Footer.vue";
+import Header from "../widgets/global/Header.vue";
+import Main from "../widgets/global/Main.vue";
+import Footer from "../widgets/global/Footer.vue";
 </script>
 
 <template>

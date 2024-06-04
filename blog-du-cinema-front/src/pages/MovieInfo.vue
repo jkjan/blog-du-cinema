@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import MovieInfoSidebar from "../widgets/Sidebar.vue";
+import MovieInfoSidebar from "../widgets/global/Sidebar.vue";
 import { Ref, ref, watch } from "vue";
 import MovieInfoBase from "../widgets/movie_info/MovieInfoBase.vue";
 import MoviePostReader from "../entities/post/MoviePostReader.vue";
 import MovieDictionary from "../widgets/movie_info/MovieDictionary.vue";
 import { ComponentData, Label } from "../app/types.ts";
 import {HttpStatusCode} from "axios";
-import {labelAPI} from "../entities/label/labelAPI.ts";
+import {infoAPI} from "../entities/info/infoAPI.ts";
 
 let categories: string[] = []
 
@@ -22,7 +22,7 @@ const componentData: Ref<ComponentData> = ref({
 });
 
 const getCategory = async () => {
-  await labelAPI.info.list().then((response) => {
+  await infoAPI.label.list().then((response) => {
     if (response.status === HttpStatusCode.Ok) {
       response.data.forEach((item: Label) => {
         const {category, labelId, labelNum, labelName} = item;
@@ -52,7 +52,7 @@ const getPost = (labelIndex: number) => {
   console.log(componentData.value.labels[labelIndex]);
   const labelId = componentData.value.labels[labelIndex].labelId;
 
-  labelAPI.post.get(labelId).then((response) => {
+  infoAPI.post.get(labelId).then((response) => {
       if (response.status === HttpStatusCode.Ok)
         componentData.value.post = response.data;
       else {

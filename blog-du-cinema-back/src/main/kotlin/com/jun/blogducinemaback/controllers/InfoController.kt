@@ -1,9 +1,9 @@
 package com.jun.blogducinemaback.controllers
 
+import com.jun.blogducinemaback.config.logger
 import com.jun.blogducinemaback.dto.InfoLabelDTO
 import com.jun.blogducinemaback.dto.InfoPostDTO
 import com.jun.blogducinemaback.services.LabelService
-import org.slf4j.LoggerFactory
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -13,10 +13,10 @@ import org.springframework.web.bind.annotation.RequestHeader
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-class LabelController(val labelService: LabelService) {
-    private val logger = LoggerFactory.getLogger(javaClass)
+class InfoController(val labelService: LabelService) {
+    private val logger = logger()
 
-    @GetMapping("/label/info")
+    @GetMapping("/info/label")
     fun getInfoLabels(@RequestHeader("Origin") origin: String?): ResponseEntity<List<InfoLabelDTO>> {
         val labelService = labelService.getInfoLabels()
 
@@ -27,10 +27,10 @@ class LabelController(val labelService: LabelService) {
         val headers = HttpHeaders()
         val body: List<InfoLabelDTO>?
 
-        if (labelService.isNullOrEmpty()) {
+        if (labelService.isEmpty()) {
             logger.info("No labels in Label table or failed to retrieve from db.")
             status = HttpStatus.NO_CONTENT
-            body = null
+            body = emptyList()
         } else {
             logger.info("Found ${labelService.size} labels in Label table.")
             status = HttpStatus.OK
@@ -45,17 +45,17 @@ class LabelController(val labelService: LabelService) {
         return response
     }
 
-    @GetMapping("/label/{labelId}/post")
+    @GetMapping("/info/post/{labelId}")
     fun getPostsForLabel(@PathVariable labelId: Int): ResponseEntity<List<InfoPostDTO>> {
         val posts = labelService.getPostsForLabel(labelId)
 
         lateinit var status: HttpStatus
         val headers = HttpHeaders()
-        val body: List<InfoPostDTO>?
+        lateinit var body: List<InfoPostDTO>
 
-        if (posts.isNullOrEmpty()) {
+        if (posts.isEmpty()) {
             status = HttpStatus.NO_CONTENT
-            body = null
+            body = emptyList()
         } else {
             status = HttpStatus.OK
             body = posts

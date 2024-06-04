@@ -17,4 +17,15 @@ interface ComponentData {
   nowLabelIndex: number;
 }
 
-export type { Label, Post, ComponentData };
+interface UserData {
+  userId: string;
+  username: string;
+  profileImage?: string;
+}
+
+interface UserState {
+  isLoggedIn: boolean;
+  nowUserData?: UserData;
+}
+
+export type { Label, Post, ComponentData, UserData, UserState };
