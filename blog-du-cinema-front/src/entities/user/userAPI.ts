@@ -7,7 +7,7 @@ import axios from "axios";
 export const userAPI = {
   "sign-up": (username: string, password: string, config?: Config) =>
     axios.post(
-      `${baseURL}/user/sign-up`,
+      `${baseURL}/sign-up`,
       {
         username,
         password,
@@ -17,7 +17,7 @@ export const userAPI = {
 
     "sign-in": (username: string, password: string, config?: Config) =>
         axios.post(
-            `${baseURL}/user/sign-in`,
+            `${baseURL}/sign-in`,
             {
                 username,
                 password,

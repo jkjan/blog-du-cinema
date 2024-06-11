@@ -1,21 +1,15 @@
 package com.jun.blogducinemaback.services
 
 import com.jun.blogducinemaback.config.logger
-import com.jun.blogducinemaback.dto.UserSignInDTO
 import com.jun.blogducinemaback.dto.UserSignUpDTO
 import com.jun.blogducinemaback.entity.Authority
 import com.jun.blogducinemaback.entity.UserData
 import com.jun.blogducinemaback.repositories.UserRepository
 import jakarta.transaction.Transactional
-import org.slf4j.LoggerFactory
-import org.springframework.security.authentication.AuthenticationManager
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
-import org.springframework.security.core.context.SecurityContext
-import org.springframework.security.core.context.SecurityContextHolder
-import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder
 import org.springframework.stereotype.Service
+import java.util.*
 
 @Service
 class UserService(
@@ -38,7 +32,7 @@ class UserService(
     }
 
     @Transactional
-    fun signUp(user: UserSignUpDTO): Boolean {
+    fun signUp(user: UserSignUpDTO): Optional<UserData> {
         val duplicatedUser = userRepository.findByUsername(user.username)
 
         if (duplicatedUser.isEmpty) {
@@ -48,12 +42,12 @@ class UserService(
             val newUser = user.toUserData()
             val defaultAuthority = Authority()
             newUser.addAuthority(defaultAuthority)
-            userRepository.save(newUser)
-            return true
+            val registeredUser = userRepository.save(newUser)
+            return Optional.of(registeredUser)
         }
         else {
             logger.info("User ${user.username} is already registered.")
-            return false
+            return Optional.empty()
         }
     }
 }

@@ -21,6 +21,7 @@ interface UserData {
   userId: string;
   username: string;
   profileImage?: string;
+  jwtToken: string;
 }
 
 interface UserState {

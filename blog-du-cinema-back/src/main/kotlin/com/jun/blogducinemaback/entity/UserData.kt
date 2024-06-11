@@ -12,9 +12,16 @@ import org.springframework.security.core.userdetails.UserDetails
 @Entity
 class UserData(
     @NaturalId
-    private val username: String = "unknown",
-    private val password: String = "unknown",
-    ) : BaseTimeEntity(), UserDetails {
+    private var username: String = "unknown",
+    private var password: String = "unknown",
+) : BaseTimeEntity(), UserDetails {
+
+    constructor(username: String, password: String, authority: String) : this() {
+        this.username = username
+        this.password = password
+        this.authorities = mutableListOf(Authority(authority))
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var userId: Int = 1

@@ -1,13 +1,15 @@
 package com.jun.blogducinemaback.dto
 
 import com.jun.blogducinemaback.entity.Post
+import jakarta.validation.constraints.NotEmpty
+import org.springframework.validation.annotation.Validated
 
-class InfoPostDTO(post: Post) {
-    var title: String? = null
-    var contentHtml: String? = null
+class InfoPostDTO(
+    @field:NotEmpty
+    var title: String,
 
-    init {
-        this.title = post.title
-        this.contentHtml = post.contentHtml
-    }
+    @field:NotEmpty
+    var contentHtml: String
+) {
+    constructor(post: Post) : this(post.title, post.contentHtml)
 }

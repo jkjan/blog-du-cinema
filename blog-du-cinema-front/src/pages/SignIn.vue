@@ -33,10 +33,14 @@ const signIn = async (): Promise<void> => {
         console.log("Success!")
         alert(response.data.message)
         userState.value.isLoggedIn = true
+        console.log(response.headers)
+        console.log(response.headers["authorization"]);
+
         userState.value.nowUserData = {
           userId: "1",
           username: userData.value.username.toString(),
-          profileImage: "stub.jpg"
+          profileImage: "stub.jpg",
+          jwtToken: response.headers["authorization"]
         }
 
         router.push("/")
