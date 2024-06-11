@@ -16,9 +16,6 @@ class UserRepositoryTest(@Autowired val userRepository: UserRepository) {
     @BeforeEach
     fun addTestUser() {
         val testUser = UserData("test", "testpw")
-        val testAuthority = Authority("ROLE_USER")
-        testUser.addAuthority(testAuthority)
-
         userRepository.save(testUser)
     }
 
@@ -29,8 +26,6 @@ class UserRepositoryTest(@Autowired val userRepository: UserRepository) {
 
         // then
         assertThat(user).isNotNull
-        assertEquals(user.get().authorities[0].authorityName, "ROLE_USER")
-        assertEquals(user.get().authorities[0].authorityId, 1)
         assertEquals(user.get().userId, 1)
     }
 }

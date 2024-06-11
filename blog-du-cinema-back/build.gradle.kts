@@ -37,10 +37,18 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("com.google.code.gson:gson:2.10.1")
     implementation("org.springframework.boot:spring-boot-starter-security")
+
+//    implementation("org.springframework.security:spring-security-config:5.7.3")
+//    implementation("org.springframework.security:spring-security-web:5.7.3")
+
     implementation("org.springframework.boot:spring-boot-starter-validation")
 
     implementation("com.linecorp.kotlin-jdsl:jpql-dsl:3.4.1")
     implementation("com.linecorp.kotlin-jdsl:jpql-render:3.4.1")
+
+    implementation("io.jsonwebtoken:jjwt-api:0.12.5")
+    runtimeOnly("io.jsonwebtoken:jjwt-impl:0.12.5")
+    runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.12.5")
 
     runtimeOnly("com.mysql:mysql-connector-j")
     runtimeOnly("org.postgresql:postgresql")
@@ -48,12 +56,12 @@ dependencies {
     testRuntimeOnly("com.h2database:h2:1.4.200")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 
+    testImplementation("org.springframework.security:spring-security-test:6.3.0")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.springframework.restdocs:spring-restdocs-asciidoctor")
     testImplementation("org.springframework.restdocs:spring-restdocs-mockmvc")
     testImplementation("org.mockito.kotlin:mockito-kotlin:5.3.1")
 
-//    implementation("org.hibernate:hibernate-jpamodelgen:6.4.4.Final")
 }
 
 tasks.withType<KotlinCompile> {

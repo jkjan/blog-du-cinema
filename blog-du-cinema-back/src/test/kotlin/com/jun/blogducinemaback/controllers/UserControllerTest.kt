@@ -2,22 +2,19 @@ package com.jun.blogducinemaback.controllers
 
 import com.google.gson.Gson
 import com.jun.blogducinemaback.basetest.DefaultControllerTest
-import com.jun.blogducinemaback.dto.Message
+import com.jun.blogducinemaback.config.JwtUtil
 import com.jun.blogducinemaback.dto.UserSignInDTO
 import com.jun.blogducinemaback.dto.UserSignUpDTO
 import com.jun.blogducinemaback.services.UserService
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertThrows
 import org.mockito.kotlin.any
 import org.mockito.kotlin.given
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document
-import org.springframework.security.authentication.BadCredentialsException
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
 
@@ -25,11 +22,11 @@ class UserControllerTest : DefaultControllerTest() {
     @Autowired
     lateinit var userService: UserService
 
+    @Autowired
+    lateinit var jwtUtil: JwtUtil
+
     @Test
     fun signUpSuccessTest() {
-        // given
-        given(userService.signUp(any<UserSignUpDTO>())).willReturn(true)
-
         val newUser = UserSignUpDTO(
             username = "test",
             password = "testPW"
@@ -40,7 +37,7 @@ class UserControllerTest : DefaultControllerTest() {
         // when
         val mvcResult =
             mockMvc.perform(
-                post("/user/sign-up")
+                post("/sign-up")
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(newUserJson)
             )
@@ -65,7 +62,7 @@ class UserControllerTest : DefaultControllerTest() {
         val newUserJson = Gson().toJson(newUser)
 
         val mvcResult = mockMvc.perform(
-            post("/user/sign-up")
+            post("/sign-up")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(newUserJson)
         )
@@ -90,7 +87,7 @@ class UserControllerTest : DefaultControllerTest() {
 
         // when
         val mvcResult = mockMvc.perform(
-            post("/user/sign-in")
+            post("/sign-in")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(newUserJson)
         )
@@ -99,7 +96,17 @@ class UserControllerTest : DefaultControllerTest() {
         val response = getResponse(mvcResult, HashMap::class.java)
 
         // then
+        val authorization = mvcResult.response.getHeaders("authorization")[0]
+        logger.info(authorization)
+        assertThat(authorization).isNotEmpty
+        assertThat(authorization).startsWith("Bearer ")
+
+        val token = authorization.split(" ")[1]
         assertThat(response.status).isEqualTo(HttpStatus.OK.value())
+        assertThat(jwtUtil.isExpired(token)).isEqualTo(false)
+        assertThat(jwtUtil.getUsername(token)).isEqualTo("test")
+        assertThat(jwtUtil.getAuthorities(token)).contains("ROLE_USER")
+        assertThat(response.body["message"]).isEqualTo("로그인에 성공하였습니다.")
     }
 
     @Test
@@ -109,17 +116,17 @@ class UserControllerTest : DefaultControllerTest() {
         val newUserJson = Gson().toJson(newUser)
 
         mockMvc.perform(
-            post("/user/sign-up")
+            post("/sign-up")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(newUserJson)
         )
 
-        val invalidUser = UserSignUpDTO("test", "IvalidtestPW")
+        val invalidUser = UserSignInDTO("test", "IvalidtestPW")
         val invalidUserJson = Gson().toJson(invalidUser)
 
         // when
         val mvcResult = mockMvc.perform(
-            post("/user/sign-in")
+            post("/sign-in")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(invalidUserJson)
         )

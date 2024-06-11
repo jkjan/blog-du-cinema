@@ -35,7 +35,7 @@ create table if not exists user_data
         primary key,
     username    varchar(56)                        not null,
     password    varchar(128)                        not null,
-    authority_id int ,
+    authority varchar(56) ,
     created_at  datetime default CURRENT_TIMESTAMP not null,
     modified_at datetime default CURRENT_TIMESTAMP not null
 );

@@ -6,6 +6,7 @@ import {userAPI} from "../entities/user/userAPI.ts";
 import {HttpStatusCode} from "axios";
 import UsernamePassword from "../entities/user/UsernamePassword.vue";
 import {useRouter} from "vue-router";
+import {userState} from "../entities/user/userState.ts";
 
 const router = useRouter()
 
@@ -30,6 +31,14 @@ const signUp = async (): Promise<void> => {
     userAPI['sign-up'](userData.value.username, userData.value.password).then((response) => {
       if (response.status === HttpStatusCode.Created) {
         alert(response.data.message)
+
+        userState.value.isLoggedIn = true
+        userState.value.nowUserData = {
+          userId: "1",
+          username: userData.value.username.toString(),
+          profileImage: "stub.jpg",
+          jwtToken: response.headers["authorization"]
+        }
 
         router.push("/")
       }

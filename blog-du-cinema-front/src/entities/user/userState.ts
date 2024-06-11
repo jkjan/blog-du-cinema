@@ -6,6 +6,7 @@ export const userState: Ref<UserState> = ref({
     nowUserData: {
         userId: "",
         username: "안녕하세요!",
-        profileImage: null
+        profileImage: null,
+        jwtToken: ""
     }
 })
