@@ -3,6 +3,6 @@ ifndef::snippets[]
 :snippets: ./build/generated-snippets
 endif::[]
 
-include::{snippets}/label/post/http-request.adoc[]
+include::{snippets}/info/label/http-request.adoc[]
 
-include::{snippets}/label/post/response-body.adoc[]
+include::{snippets}/info/label/response-body.adoc[]

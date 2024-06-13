@@ -3,13 +3,19 @@ import com.jun.blogducinemaback.entity.Authority
 import com.jun.blogducinemaback.entity.UserData
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.MalformedJwtException
+import io.jsonwebtoken.io.Decoders
+import io.jsonwebtoken.security.Keys
+import org.jetbrains.annotations.NotNull
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
 import java.util.Date
 import javax.crypto.SecretKey
 
 @Component
-class JwtUtil {
-    private val secretKey: SecretKey = Jwts.SIG.HS256.key().build()
+class JwtUtil(jwtConfiguration: JwtConfiguration) {
+    private val secretString: String = jwtConfiguration.secret
+
+    val secretKey: SecretKey = Keys.hmacShaKeyFor(Decoders.BASE64.decode(secretString))
 
     fun getUsername(token: String?): String {
         return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).payload.get(
@@ -47,6 +53,8 @@ class JwtUtil {
         val authoritiesString = authorities.joinToString(",")
 
         return Jwts.builder()
+            .header()
+            .add("", "").and()
             .claim("username", username)
             .claim("role", authoritiesString)
             .issuedAt(Date())

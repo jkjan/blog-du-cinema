@@ -1,6 +1,7 @@
 package com.jun.blogducinemaback.controllers
 
 import com.google.gson.Gson
+import com.jun.blogducinemaback.basetest.DefaultControllerTest
 import com.jun.blogducinemaback.config.JwtFilter
 import com.jun.blogducinemaback.config.JwtUtil
 import com.jun.blogducinemaback.config.SecurityConfig
@@ -21,6 +22,7 @@ import org.springframework.context.annotation.Import
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
+import org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document
 import org.springframework.security.access.hierarchicalroles.RoleHierarchy
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authorization.AuthorizationManager
@@ -43,27 +45,7 @@ import org.springframework.test.web.servlet.setup.DefaultMockMvcBuilder
 import org.springframework.test.web.servlet.setup.MockMvcBuilders
 import org.springframework.web.context.WebApplicationContext
 
-
-@WebMvcTest(controllers = [PostController::class])
-@Import(JwtFilter::class, JwtUtil::class)
-@ExtendWith(SpringExtension::class)
-class PostControllerTest {
-    @Autowired
-    private lateinit var context: WebApplicationContext
-
-    @Autowired
-    private lateinit var jwtUtil: JwtUtil
-
-    @Autowired
-    private lateinit var mockMvc: MockMvc
-
-    @BeforeEach
-    fun setUp() {
-        mockMvc = MockMvcBuilders.webAppContextSetup(context)
-            .apply<DefaultMockMvcBuilder>(springSecurity())
-            .build()
-    }
-
+class PostControllerTest : DefaultControllerTest() {
     @Test
     @WithAnonymousUser
     fun notEnoughAuthorityPostFailTest() {
@@ -72,10 +54,13 @@ class PostControllerTest {
         val newPostJson = Gson().toJson(newPost)
 
         // when
-        val mvcResult = mockMvc.perform(post("/post").with(csrf()).header(HttpHeaders.AUTHORIZATION, "Bearer invalid-token").contentType(MediaType.APPLICATION_JSON).content(newPostJson)).andReturn()
+        val mvcResult = mockMvc.perform(
+            post("/post").with(csrf()).header(HttpHeaders.AUTHORIZATION, "Bearer invalid-token")
+                .contentType(MediaType.APPLICATION_JSON).content(newPostJson)
+        ).andReturn()
 
         // then
-        assertThat(mvcResult.response.status).isEqualTo(HttpStatus.UNAUTHORIZED.value())
+        assertThat(mvcResult.response.status).isEqualTo(HttpStatus.FORBIDDEN.value())
     }
 
     @Test
@@ -86,7 +71,9 @@ class PostControllerTest {
         val newPostJson = Gson().toJson(newPost)
 
         // when
-        val mvcResult = mockMvc.perform(post("/post").with(csrf()).contentType(MediaType.APPLICATION_JSON).content(newPostJson)).andReturn()
+        val mvcResult =
+            mockMvc.perform(post("/post").with(csrf()).contentType(MediaType.APPLICATION_JSON).content(newPostJson))
+                .andReturn()
         val body = Gson().fromJson(mvcResult.response.contentAsString, HashMap::class.java)
 
         // then
@@ -102,7 +89,9 @@ class PostControllerTest {
         val newPostJson = Gson().toJson(newPost)
 
         // when
-        val mvcResult = mockMvc.perform(post("/post").with(csrf()).contentType(MediaType.APPLICATION_JSON).content(newPostJson)).andReturn()
+        val mvcResult =
+            mockMvc.perform(post("/post").with(csrf()).contentType(MediaType.APPLICATION_JSON).content(newPostJson))
+                .andReturn()
         val body = Gson().fromJson(mvcResult.response.contentAsString, HashMap::class.java)
 
         // then

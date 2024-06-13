@@ -3,6 +3,10 @@ ifndef::snippets[]
 :snippets: ./build/generated-snippets
 endif::[]
 
-include::{snippets}/label/post/http-request.adoc[]
+include::{snippets}/user/sign-up/http-request.adoc[]
 
-include::{snippets}/label/post/response-body.adoc[]
+include::{snippets}/user/sign-up/http-response.adoc[]
+
+include::{snippets}/user/invalid-user-sign-up/http-request.adoc[]
+
+include::{snippets}/user/invalid-user-sign-up/http-response.adoc[]

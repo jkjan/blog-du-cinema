@@ -71,18 +71,17 @@ class UserController(
         lateinit var response: ResponseEntity<HashMap<String, String>>
 
         try {
-            val authenticationRequest = UsernamePasswordAuthenticationToken.unauthenticated(user.username, user.password)
+            val userData = userService.loadUserByUsername(user.username)
+            val token = UsernamePasswordAuthenticationToken(userData, user.password)
 
             logger.info(user.username, user.password)
-            val authentication = authenticationManager.authenticate(authenticationRequest)
-
-            //세션에 사용자 등록
+            val authentication = authenticationManager.authenticate(token)
             SecurityContextHolder.getContext().authentication = authentication
 
             logger.info("로그인 성공")
             status = HttpStatus.OK
-            val token = jwtUtil.createJwt(user.username, authentication.authorities.map { it.authority })
-            headers.set("authorization", "Bearer $token")
+            val jwtToken = jwtUtil.createJwt(user.username, authentication.authorities.map { it.authority })
+            headers.set("authorization", "Bearer $jwtToken")
             body["message"] = "로그인에 성공하였습니다."
         }
         catch (e: BadCredentialsException) {

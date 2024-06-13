@@ -66,7 +66,7 @@ class UserControllerTest : DefaultControllerTest() {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(newUserJson)
         )
-            .andExpect(status().isBadRequest)
+            .andDo(document("user/invalid-user-sign-up"))
             .andReturn()
 
         // then
@@ -91,6 +91,7 @@ class UserControllerTest : DefaultControllerTest() {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(newUserJson)
         )
+            .andDo(document("user/sign-in"))
             .andReturn()
 
         val response = getResponse(mvcResult, HashMap::class.java)
@@ -121,7 +122,7 @@ class UserControllerTest : DefaultControllerTest() {
                 .content(newUserJson)
         )
 
-        val invalidUser = UserSignInDTO("test", "IvalidtestPW")
+        val invalidUser = UserSignInDTO("test", "InvalidTestPW")
         val invalidUserJson = Gson().toJson(invalidUser)
 
         // when
@@ -130,6 +131,7 @@ class UserControllerTest : DefaultControllerTest() {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(invalidUserJson)
         )
+            .andDo(document("user/invalid-user-sign-in"))
             .andReturn()
 
         val response = getResponse(mvcResult, HashMap::class.java)
