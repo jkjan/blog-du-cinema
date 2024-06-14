@@ -2,21 +2,17 @@ package com.jun.blogducinemaback.controllers
 
 import com.google.gson.Gson
 import com.jun.blogducinemaback.basetest.DefaultControllerTest
-import com.jun.blogducinemaback.config.JwtUtil
-import com.jun.blogducinemaback.dto.UserSignInDTO
-import com.jun.blogducinemaback.dto.UserSignUpDTO
-import com.jun.blogducinemaback.services.UserService
+import com.jun.blogducinemaback.global.utils.JwtUtil
+import com.jun.blogducinemaback.application.dto.UserSignInDTO
+import com.jun.blogducinemaback.application.dto.UserSignUpDTO
+import com.jun.blogducinemaback.application.model.UserService
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
-import org.mockito.kotlin.any
-import org.mockito.kotlin.given
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
 
 class UserControllerTest : DefaultControllerTest() {
     @Autowired

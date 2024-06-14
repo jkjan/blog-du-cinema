@@ -46,9 +46,7 @@ const signIn = async (): Promise<void> => {
         router.push("/")
       }
     }).catch((error) => {
-      if (error.response.status === HttpStatusCode.Unauthorized) {
         alert(error.response.data.message)
-      }
     })
     console.log("Done!")
   }

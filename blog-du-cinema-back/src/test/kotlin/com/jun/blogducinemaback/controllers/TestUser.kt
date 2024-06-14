@@ -1,7 +1,6 @@
 package com.jun.blogducinemaback.controllers
 
-import com.jun.blogducinemaback.entity.UserData
-import org.springframework.security.core.userdetails.User
+import com.jun.blogducinemaback.domain.UserData
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService
 

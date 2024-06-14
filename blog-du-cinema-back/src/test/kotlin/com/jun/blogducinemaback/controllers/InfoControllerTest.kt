@@ -1,30 +1,27 @@
 package com.jun.blogducinemaback.controllers
 
-import com.google.gson.Gson
 import com.jun.blogducinemaback.basetest.DefaultControllerTest
-import com.jun.blogducinemaback.dto.InfoLabelDTO
-import com.jun.blogducinemaback.dto.InfoPostDTO
-import com.jun.blogducinemaback.entity.Label
-import com.jun.blogducinemaback.entity.Post
-import com.jun.blogducinemaback.services.LabelService
+import com.jun.blogducinemaback.application.dto.InfoLabelDTO
+import com.jun.blogducinemaback.application.dto.InfoPostDTO
+import com.jun.blogducinemaback.domain.Label
+import com.jun.blogducinemaback.domain.Post
+import com.jun.blogducinemaback.application.model.InfoService
 import org.assertj.core.api.Assertions.assertThat
-import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import org.mockito.kotlin.given
 import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.http.HttpStatus
 import org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
 class InfoControllerTest : DefaultControllerTest() {
     @MockBean
-    lateinit var labelService: LabelService
+    lateinit var infoService: InfoService
 
     @Test
     fun getInfoLabelsSucceedTest() {
         // given
-        given(labelService.getInfoLabels()).willReturn(
+        given(infoService.getInfoLabels()).willReturn(
             listOf(
                 InfoLabelDTO(Label(1, "test1", "test")),
                 InfoLabelDTO(Label(2, "test2", "test")),
@@ -51,7 +48,7 @@ class InfoControllerTest : DefaultControllerTest() {
     @Test
     fun getInfoLabelsFailTest() {
         // given
-        given(labelService.getInfoLabels()).willReturn(listOf())
+        given(infoService.getInfoLabels()).willReturn(listOf())
 
         // when
         val mvcResult =
@@ -68,7 +65,7 @@ class InfoControllerTest : DefaultControllerTest() {
     fun getInfoPostsSucceedTest() {
         // given
         val labelId = 1
-        given(labelService.getPostsForLabel(labelId)).willReturn(
+        given(infoService.getPostsForLabel(labelId)).willReturn(
             listOf(
                 InfoPostDTO(Post("title 1")),
                 InfoPostDTO(Post("title 2")),

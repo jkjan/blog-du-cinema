@@ -1,8 +1,9 @@
 package com.jun.blogducinemaback.repositories
 
-import com.jun.blogducinemaback.entity.Label
-import com.jun.blogducinemaback.entity.Post
-import com.jun.blogducinemaback.entity.UserData
+import com.jun.blogducinemaback.adapter.out.persistence.PostRepository
+import com.jun.blogducinemaback.domain.Label
+import com.jun.blogducinemaback.domain.Post
+import com.jun.blogducinemaback.domain.UserData
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
