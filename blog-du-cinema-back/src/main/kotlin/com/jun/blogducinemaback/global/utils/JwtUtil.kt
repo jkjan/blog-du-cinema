@@ -13,9 +13,9 @@ import javax.crypto.SecretKey
 
 @Component
 class JwtUtil(jwtProperties: JwtProperties) {
-    private final val secretString: String = jwtProperties.secret
-    private final val secretKey: SecretKey = Keys.hmacShaKeyFor(Decoders.BASE64.decode(secretString))
-    private final var lifetime = 0L
+    final val secretString: String = jwtProperties.secret
+    final val secretKey: SecretKey = Keys.hmacShaKeyFor(Decoders.BASE64.decode(secretString))
+    final var lifetime = 0L
 
     init {
         val lifetimeType = TimeUnit.valueOf(jwtProperties.lifetime.type)
@@ -59,7 +59,7 @@ class JwtUtil(jwtProperties: JwtProperties) {
         return Jwts.builder()
             .claim("username", username)
             .claim("role", authoritiesString)
-            .issuedAt(Date())
+            .issuedAt(now)
             .expiration(expiration)
             .signWith(secretKey)
             .compact()

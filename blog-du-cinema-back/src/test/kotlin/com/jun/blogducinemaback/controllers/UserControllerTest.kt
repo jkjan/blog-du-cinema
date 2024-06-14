@@ -6,6 +6,8 @@ import com.jun.blogducinemaback.global.utils.JwtUtil
 import com.jun.blogducinemaback.application.dto.UserSignInDTO
 import com.jun.blogducinemaback.application.dto.UserSignUpDTO
 import com.jun.blogducinemaback.application.model.UserService
+import com.jun.blogducinemaback.domain.Authority
+import com.jun.blogducinemaback.global.types.Role
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -102,7 +104,7 @@ class UserControllerTest : DefaultControllerTest() {
         assertThat(response.status).isEqualTo(HttpStatus.OK.value())
         assertThat(jwtUtil.isExpired(token)).isEqualTo(false)
         assertThat(jwtUtil.getUsername(token)).isEqualTo("test")
-        assertThat(jwtUtil.getAuthorities(token)).contains("ROLE_USER")
+        assertThat(jwtUtil.getAuthorities(token)).contains(Authority(Role.USER.name))
         assertThat(response.body["message"]).isEqualTo("로그인에 성공하였습니다.")
     }
 

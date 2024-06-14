@@ -1,27 +1,20 @@
 package com.jun.blogducinemaback.global.types
 
-enum class TimeUnit(private val type: String, private val duration: Long) {
-    YEAR("year", 365),
-    DAY("day", 365),
-    HOUR("hour", 24),
-    MINUTE("minute", 60),
-    SECOND("second", 60),
-    MILLISECOND("millisecond", 1000);
+enum class TimeUnit(private val duration: Long) {
+    YEAR(365),
+    DAY(365),
+    HOUR(24),
+    MINUTE(60),
+    SECOND(60),
+    MILLISECOND(1000);
 
     fun getLifetimeInMilli(duration: Long): Long {
-        var lifetimeInMilli = 0L
-        var mulitiply = false
+        var lifetimeInMilli = duration
 
-        for (timeUnit in entries) {
-            if (timeUnit.type == type) {
-                mulitiply = true
-                lifetimeInMilli = duration
-                continue
-            }
-            if (mulitiply) {
-                lifetimeInMilli *= timeUnit.duration
-            }
+        for (i in ordinal + 1 ..< entries.size) {
+            lifetimeInMilli *= TimeUnit.entries[i].duration
         }
+
         return lifetimeInMilli
     }
 }
