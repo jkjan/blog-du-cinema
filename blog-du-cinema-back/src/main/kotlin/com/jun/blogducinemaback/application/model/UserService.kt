@@ -6,7 +6,9 @@ import com.jun.blogducinemaback.domain.Authority
 import com.jun.blogducinemaback.domain.UserData
 import com.jun.blogducinemaback.adapter.out.persistence.UserRepository
 import jakarta.transaction.Transactional
+import org.springframework.security.authentication.BadCredentialsException
 import org.springframework.security.core.userdetails.UserDetailsService
+import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder
 import org.springframework.stereotype.Service
 import java.util.*
@@ -18,17 +20,13 @@ class UserService(
 ): UserDetailsService {
     private val logger = logger()
 
-    override fun loadUserByUsername(username: String?): UserData {
-        if (username.isNullOrBlank()) {
-            return UserData()
-        }
-        else {
-            val user = userRepository.findByUsername(username)
-            if (user.isPresent)
-                return user.get()
-            else
-                return UserData()
-        }
+    override fun loadUserByUsername(username: String): UserData {
+        val user = userRepository.findByUsername(username)
+
+        if (user.isPresent)
+            return user.get()
+        else
+            throw UsernameNotFoundException(username)
     }
 
     @Transactional

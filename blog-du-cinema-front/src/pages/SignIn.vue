@@ -30,9 +30,7 @@ const signIn = async (): Promise<void> => {
   if (!isFormCorrect) {
     console.log("Error");
   } else {
-    userAPI["sign-in"](signInForm.value.username, signInForm.value.password, {
-      withCredentials: true,
-    })
+    userAPI["sign-in"](signInForm.value.username, signInForm.value.password, )
       .then((response) => {
         if (response.status === HttpStatusCode.Ok) {
           userData.value = {

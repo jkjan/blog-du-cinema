@@ -9,7 +9,10 @@ export const userAPI = {
         username,
         password,
       },
-      config,
+      {
+        ...config,
+        withCredentials: true,
+      },
     ),
 
   "sign-in": (username: string, password: string, config?: Config) =>
@@ -19,6 +22,9 @@ export const userAPI = {
         username,
         password,
       },
-      config,
+      {
+        ...config,
+        withCredentials: true,
+      },
     ),
 };

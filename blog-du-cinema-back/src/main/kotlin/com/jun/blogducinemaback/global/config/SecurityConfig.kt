@@ -5,6 +5,7 @@ import com.jun.blogducinemaback.adapter.`in`.filter.JwtFilter
 import com.jun.blogducinemaback.global.utils.JwtUtil
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.http.HttpMethod
 import org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler
 import org.springframework.security.access.expression.method.MethodSecurityExpressionHandler
 import org.springframework.security.access.hierarchicalroles.RoleHierarchy
@@ -26,7 +27,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 
 @Configuration
 @EnableWebSecurity(debug = true)
-@EnableMethodSecurity(prePostEnabled = true)
+@EnableMethodSecurity
 class SecurityConfig(private val jwtUtil: JwtUtil) {
     @Bean
     fun securityFilterChain(http: HttpSecurity): SecurityFilterChain {
@@ -88,7 +89,7 @@ class SecurityConfig(private val jwtUtil: JwtUtil) {
                     .allowedMethods("*")
                     .allowCredentials(true)
                     .exposedHeaders("Authorization", "Set-Cookie")
-                    .maxAge(3000)
+                    .maxAge(300)
             }
         }
     }
