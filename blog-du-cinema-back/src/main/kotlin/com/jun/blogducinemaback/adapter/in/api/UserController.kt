@@ -39,12 +39,11 @@ class UserController(
         val headers = HttpHeaders()
 
         if (signUpResult.isPresent) {
-            status = HttpStatus.CREATED
-
             val registeredUserData = signUpResult.get()
             val token = jwtUtil.createJwt(registeredUserData.username, registeredUserData.authorities.map { it.authorityName })
-            headers.set("authorization", "Bearer $token")
+            headers.set(HttpHeaders.SET_COOKIE, jwtUtil.createCookie(token).toString())
 
+            status = HttpStatus.CREATED
             body["message"] = "회원 가입이 완료되었습니다."
         } else {
             status = HttpStatus.CONFLICT
@@ -71,17 +70,16 @@ class UserController(
         lateinit var response: ResponseEntity<HashMap<String, String>>
 
         try {
-            val userData = userService.loadUserByUsername(user.username)
-            val token = UsernamePasswordAuthenticationToken(userData, user.password)
-
-            logger.info(user.username, user.password)
+            val token = UsernamePasswordAuthenticationToken(user.username, user.password)
             val authentication = authenticationManager.authenticate(token)
-            SecurityContextHolder.getContext().authentication = authentication
 
             logger.info("로그인 성공")
-            status = HttpStatus.OK
+
             val jwtToken = jwtUtil.createJwt(user.username, authentication.authorities.map { it.authority })
-            headers.set("authorization", "Bearer $jwtToken")
+            val cookie = jwtUtil.createCookie(jwtToken)
+
+            status = HttpStatus.OK
+            headers.set(HttpHeaders.SET_COOKIE, cookie.toString())
             body["message"] = "로그인에 성공하였습니다."
         }
         catch (e: BadCredentialsException) {

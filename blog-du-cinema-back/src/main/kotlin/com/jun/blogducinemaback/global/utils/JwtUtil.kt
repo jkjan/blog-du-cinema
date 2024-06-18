@@ -7,6 +7,8 @@ import io.jsonwebtoken.JwtException
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.io.Decoders
 import io.jsonwebtoken.security.Keys
+import org.springframework.http.ResponseCookie
+import org.springframework.http.ResponseCookie.ResponseCookieBuilder
 import org.springframework.stereotype.Component
 import java.util.Date
 import javax.crypto.SecretKey
@@ -63,5 +65,16 @@ class JwtUtil(jwtProperties: JwtProperties) {
             .expiration(expiration)
             .signWith(secretKey)
             .compact()
+    }
+
+    fun createCookie(token: String): ResponseCookie {
+        return ResponseCookie
+            .from("jwt-token", token)
+            .httpOnly(true)
+            .path("/")
+            .sameSite("None")
+            .maxAge(lifetime / 1000)
+            .secure(false)
+            .build()
     }
 }

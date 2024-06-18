@@ -86,7 +86,8 @@ class SecurityConfig(private val jwtUtil: JwtUtil) {
                     .addMapping("/**")
                     .allowedOrigins("http://localhost:5173", "http://127.0.0.1:5173")
                     .allowedMethods("*")
-                    .exposedHeaders("authorization")
+                    .allowCredentials(true)
+                    .exposedHeaders("Authorization", "Set-Cookie")
                     .maxAge(3000)
             }
         }
