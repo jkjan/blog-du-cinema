@@ -38,6 +38,9 @@ dependencies {
     implementation("com.google.code.gson:gson:2.10.1")
     implementation("org.springframework.boot:spring-boot-starter-security")
 
+    implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
+//    implementation("nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect")
+
 //    implementation("org.springframework.security:spring-security-config:5.7.3")
 //    implementation("org.springframework.security:spring-security-web:5.7.3")
 

@@ -5,10 +5,10 @@ import MovieInfoBase from "../widgets/movie_info/MovieInfoBase.vue";
 import MoviePostReader from "../entities/post/MoviePostReader.vue";
 import MovieDictionary from "../widgets/movie_info/MovieDictionary.vue";
 import { ComponentData, Label } from "../app/types.ts";
-import {HttpStatusCode} from "axios";
-import {infoAPI} from "../entities/info/infoAPI.ts";
+import { HttpStatusCode } from "axios";
+import { infoAPI } from "../entities/info/infoAPI.ts";
 
-let categories: string[] = []
+let categories: string[] = [];
 
 const labelsForCategory: {
   [category: string]: Label[];
@@ -25,7 +25,7 @@ const getCategory = async () => {
   await infoAPI.label.list().then((response) => {
     if (response.status === HttpStatusCode.Ok) {
       response.data.forEach((item: Label) => {
-        const {category, labelId, labelNum, labelName} = item;
+        const { category, labelId, labelNum, labelName } = item;
 
         if (!labelsForCategory[category!]) {
           labelsForCategory[category!] = [];
@@ -39,7 +39,7 @@ const getCategory = async () => {
       });
 
       console.log(labelsForCategory);
-      categories = Object.keys(labelsForCategory)
+      categories = Object.keys(labelsForCategory);
       componentData.value.category = categories[0];
     }
   });
@@ -53,12 +53,12 @@ const getPost = (labelIndex: number) => {
   const labelId = componentData.value.labels[labelIndex].labelId;
 
   infoAPI.post.get(labelId).then((response) => {
-      if (response.status === HttpStatusCode.Ok)
-        componentData.value.post = response.data;
-      else {
-        componentData.value.post = [];
-      }
-    });
+    if (response.status === HttpStatusCode.Ok)
+      componentData.value.post = response.data;
+    else {
+      componentData.value.post = [];
+    }
+  });
 };
 
 watch(
@@ -83,10 +83,7 @@ getCategory();
 </script>
 
 <template>
-  <MovieInfoBase
-      :categories="categories"
-      v-model="componentData.category"
-  >
+  <MovieInfoBase :categories="categories" v-model="componentData.category">
     <template #sidebar v-if="componentData.labels.length > 0">
       <MovieInfoSidebar
         @changeNowIndex="
