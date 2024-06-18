@@ -1,7 +1,4 @@
-import {
-  baseURL,
-  Config,
-} from "../../shared/base_api_service.ts";
+import { baseURL, Config } from "../../shared/base_api_service.ts";
 import axios from "axios";
 
 export const userAPI = {
@@ -15,13 +12,13 @@ export const userAPI = {
       config,
     ),
 
-    "sign-in": (username: string, password: string, config?: Config) =>
-        axios.post(
-            `${baseURL}/sign-in`,
-            {
-                username,
-                password,
-            },
-            config,
-        ),
+  "sign-in": (username: string, password: string, config?: Config) =>
+    axios.post(
+      `${baseURL}/sign-in`,
+      {
+        username,
+        password,
+      },
+      config,
+    ),
 };

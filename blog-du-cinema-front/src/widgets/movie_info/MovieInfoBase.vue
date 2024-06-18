@@ -1,17 +1,13 @@
 <script setup lang="ts">
 defineProps<{ categories: string[] }>();
-const model = defineModel()
+const model = defineModel();
 let activeTab: number = 0;
 </script>
 
 <template>
   <v-card>
     <v-tabs align-tabs="title" v-model="activeTab">
-      <v-tab
-        v-for="(m, i) in categories"
-        :key="i"
-        @click="model = m"
-      >
+      <v-tab v-for="(m, i) in categories" :key="i" @click="model = m">
         {{ m }}
       </v-tab>
     </v-tabs>

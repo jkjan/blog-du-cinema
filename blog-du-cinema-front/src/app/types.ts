@@ -18,15 +18,8 @@ interface ComponentData {
 }
 
 interface UserData {
-  userId: string;
   username: string;
   profileImage?: string;
-  jwtToken: string;
 }
 
-interface UserState {
-  isLoggedIn: boolean;
-  nowUserData?: UserData;
-}
-
-export type { Label, Post, ComponentData, UserData, UserState };
+export type { Label, Post, ComponentData, UserData };

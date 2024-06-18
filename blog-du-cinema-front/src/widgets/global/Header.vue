@@ -1,12 +1,16 @@
 <script setup lang="ts">
 import UserAvatar from "../../entities/user/UserAvatar.vue";
-import {userState} from "../../entities/user/userState.ts";
+import { inject } from "vue";
+import { UserData } from "../../app/types.ts";
+import { RemovableRef } from "@vueuse/core";
 
 const menu = [
   { name: "영화란?", path: "/what-is-movie" },
   { name: "영화 정보", path: "/info" },
   { name: "게시판", path: "/forum" },
 ];
+
+const userData: RemovableRef<UserData> = inject("userData");
 </script>
 
 <template>
@@ -22,8 +26,7 @@ const menu = [
         {{ m.name }}
       </v-btn>
 
-      <UserAvatar :userData="userState.nowUserData"/>
-
+      <UserAvatar v-model:userData="userData" :me="true" />
     </v-container>
   </v-app-bar>
 </template>
