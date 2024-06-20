@@ -20,7 +20,7 @@ class UserData(
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    var userId: Int = 1
+    var userId: Int = 0
 
     @OneToMany(cascade = [(CascadeType.ALL)], fetch = FetchType.LAZY, mappedBy = "userData", orphanRemoval = true)
     var posts: MutableList<Post> = mutableListOf()

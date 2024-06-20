@@ -1,18 +1,32 @@
 package com.jun.blogducinemaback.repositories
 
 import com.jun.blogducinemaback.adapter.out.persistence.PostRepository
+import com.jun.blogducinemaback.application.dto.ForumPostListDTO
 import com.jun.blogducinemaback.domain.Label
 import com.jun.blogducinemaback.domain.Post
 import com.jun.blogducinemaback.domain.UserData
+import jakarta.persistence.EntityManager
 import org.assertj.core.api.Assertions.assertThat
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
+import org.springframework.data.domain.PageRequest
 
 @DataJpaTest
 class PostRepositoryTest {
     @Autowired
+    private lateinit var entityManager: EntityManager
+
+    @Autowired
     lateinit var postRepository: PostRepository
+
+    @BeforeEach
+//    @SQL("ALTER TABLE post AUTO_INCREMENT = 1")
+    fun clearPK() {
+        this.entityManager.createNativeQuery("ALTER TABLE post ALTER COLUMN `post_id` RESTART WITH 1").executeUpdate()
+        this.entityManager.createNativeQuery("ALTER TABLE user_data ALTER COLUMN `user_id` RESTART WITH 1").executeUpdate()
+    }
 
     @Test
     fun labelPostsTest() {
@@ -47,5 +61,70 @@ class PostRepositoryTest {
             assertThat(post.postLabel[1].label.labelName).isEqualTo(label2.labelName)
             assertThat(post.postLabel[2].label.labelName).isEqualTo(label3.labelName)
         }
+    }
+
+
+    @Test
+    fun forumPostListTest() {
+        postRepository.saveAll(listOf(
+            Post("title 1", "html 1"),
+            Post("title 2", "html 2"),
+            Post("title 3", "html 3"),
+            Post("title 4", "html 4"),
+            Post("title 5", "html 5"),
+            Post("title 6", "html 6"),
+            Post("title 7", "html 7"),
+            )
+        )
+
+        val pageable = PageRequest.of(0, 5)
+        val forumPostPage = postRepository.findAll(pageable)
+
+        assertThat(forumPostPage.content).hasSize(5)
+    }
+
+    @Test
+    fun forumNthPageTest() {
+        postRepository.saveAll(
+            listOf(
+                Post("title 1", "html 1"),
+                Post("title 2", "html 2"),
+                Post("title 3", "html 3"),
+                Post("title 4", "html 4"),
+                Post("title 5", "html 5"),
+                Post("title 6", "html 6"),
+                Post("title 7", "html 7"),
+            )
+        )
+
+        val pageable = PageRequest.of(1, 5)
+        val forumPostPage = postRepository.findAll(pageable)
+
+        assertThat(forumPostPage.content).hasSize(2)
+        assertThat(forumPostPage.totalPages).isEqualTo(2)
+    }
+
+    @Test
+    fun aaa() {
+        postRepository.saveAll(
+            listOf(
+                Post("title 1", "html 1"),
+                Post("title 2", "html 2"),
+                Post("title 3", "html 3"),
+                Post("title 4", "html 4"),
+                Post("title 5", "html 5"),
+                Post("title 6", "html 6"),
+                Post("title 7", "html 7"),
+            )
+        )
+
+        val page = PageRequest.of(0, 5)
+
+        val posts = postRepository.findPostsByPostIdLessThanOrderByPostIdDesc(4, page)
+        val list = ForumPostListDTO(posts)
+
+        assertThat(posts).hasSize(3)
+        assertThat(list.postEntries.size).isEqualTo(3)
+        assertThat(list.isLast).isTrue()
     }
 }

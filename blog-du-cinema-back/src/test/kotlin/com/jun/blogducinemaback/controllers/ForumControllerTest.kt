@@ -18,7 +18,7 @@ import org.springframework.security.test.context.support.WithMockUser
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 
-class PostControllerTest : DefaultControllerTest() {
+class ForumControllerTest : DefaultControllerTest() {
     @Autowired
     lateinit var jwtUtil: JwtUtil
 
@@ -93,4 +93,5 @@ class PostControllerTest : DefaultControllerTest() {
         assertThat(response.body["title"]).isEqualTo("title")
         assertThat(response.body["contentHtml"]).isEqualTo("html")
     }
+
 }
