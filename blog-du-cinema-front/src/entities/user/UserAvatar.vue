@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { UserData } from "../../app/types.ts";
 import { ModelRef } from "vue";
+import {userAPI} from "./userAPI.ts";
 
 const props = defineProps<{ me: boolean }>();
 const userData: ModelRef<UserData> = defineModel<UserData>("userData");
@@ -8,6 +9,12 @@ const userData: ModelRef<UserData> = defineModel<UserData>("userData");
 const signOut = () => {
   userData.value = null;
 };
+
+let nickname: string = "nickname"
+
+userAPI["nickname"](userData.value.username).then((response) => {
+  nickname = response.data
+})
 </script>
 
 <template>
@@ -25,10 +32,10 @@ const signOut = () => {
       <v-card>
         <v-card-text>
           <div v-if="userData" class="mx-auto text-center">
-            <h3>{{ userData.username }}</h3>
+            <h3>{{ nickname }}</h3>
             <div class="user-action">
               <v-divider class="my-3" />
-              <v-btn variant="text" rounded> 작성글 보기</v-btn>
+              <v-btn variant="text" rounded>작성글 보기</v-btn>
               <div v-if="me">
                 <v-divider class="my-3" />
                 <v-btn variant="text" rounded @click="signOut()">

@@ -1,4 +1,4 @@
-package com.jun.blogducinemaback.controllers
+package com.jun.blogducinemaback.basetest
 
 import com.jun.blogducinemaback.domain.UserData
 import com.jun.blogducinemaback.global.types.Role

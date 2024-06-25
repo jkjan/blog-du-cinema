@@ -5,10 +5,12 @@ import com.jun.blogducinemaback.application.dto.UserSignUpDTO
 import com.jun.blogducinemaback.domain.Authority
 import com.jun.blogducinemaback.domain.UserData
 import com.jun.blogducinemaback.adapter.out.persistence.UserRepository
+import com.jun.blogducinemaback.application.dto.UserSignInDTO
 import jakarta.transaction.Transactional
+import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.BadCredentialsException
-import org.springframework.security.core.userdetails.UserDetailsService
-import org.springframework.security.core.userdetails.UsernameNotFoundException
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
+import org.springframework.security.core.Authentication
 import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder
 import org.springframework.stereotype.Service
 import java.util.*
@@ -17,21 +19,14 @@ import java.util.*
 class UserService(
     private val userRepository: UserRepository,
     private val pbkdf2PasswordEncoder: Pbkdf2PasswordEncoder,
-): UserDetailsService {
+    private val userDataDetailsService: UserDataDetailsService,
+    private val authenticationManager: AuthenticationManager
+) {
     private val logger = logger()
-
-    override fun loadUserByUsername(username: String): UserData {
-        val user = userRepository.findByUsername(username)
-
-        if (user.isPresent)
-            return user.get()
-        else
-            throw UsernameNotFoundException(username)
-    }
 
     @Transactional
     fun signUp(user: UserSignUpDTO): Optional<UserData> {
-        val duplicatedUser = userRepository.findByUsername(user.username)
+        val duplicatedUser = userRepository.nnnnn(user.username)
 
         if (duplicatedUser.isEmpty) {
             logger.info("User ${user.username} is not registered.")
@@ -47,5 +42,21 @@ class UserService(
             logger.info("User ${user.username} is already registered.")
             return Optional.empty()
         }
+    }
+
+    fun signIn(user: UserSignInDTO): Optional<Authentication> {
+        try {
+            val token = UsernamePasswordAuthenticationToken(user.username, user.password)
+            val authentication = authenticationManager.authenticate(token)
+
+            return Optional.of(authentication)
+        } catch (e: BadCredentialsException) {
+            return Optional.empty()
+        }
+    }
+
+    fun getNickname(username: String): String? {
+        val user = this.userDataDetailsService.loadUserByUsername(username)
+        return user.nickname
     }
 }

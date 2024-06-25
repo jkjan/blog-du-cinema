@@ -7,9 +7,14 @@ class UserSignUpDTO(
     var username: String = "unknown",
 
     @field:NotBlank
-    var password: String = "unknown"
+    var password: String = "unknown",
+
+    @field:NotBlank
+    var nickname: String = "unknown"
 ) {
     fun toUserData(): UserData {
-        return UserData(username, password)
+        val user = UserData(username, password)
+        user.nickname = this.nickname
+        return user
     }
 }

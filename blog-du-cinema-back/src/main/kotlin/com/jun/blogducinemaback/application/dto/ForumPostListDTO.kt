@@ -8,7 +8,7 @@ class ForumPostListDTO(page: Page<Post>) {
     data class PostEntry(
         var postId: Int,
         var title: String,
-        var username: String,
+        var nickname: String,
         var createdAt: LocalDateTime
     )
 
@@ -17,7 +17,7 @@ class ForumPostListDTO(page: Page<Post>) {
 
     init {
         postEntries = page.content.map { post ->
-            PostEntry(post.postId, post.title, post.userData.username, post.createdAt)
+            PostEntry(post.postId, post.title, post.userData.nickname, post.createdAt)
         }
         isLast = page.isLast
     }
