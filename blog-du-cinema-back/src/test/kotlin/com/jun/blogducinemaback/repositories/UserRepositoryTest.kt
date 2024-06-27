@@ -31,7 +31,7 @@ class UserRepositoryTest(@Autowired val userRepository: UserRepository) {
         statistics.clear()
 
         repeat(100) {
-            userRepository.nnnnn("user1")
+            userRepository.findByNaturalId("user1")
         }
         val naturalIdCount = statistics.prepareStatementCount
 

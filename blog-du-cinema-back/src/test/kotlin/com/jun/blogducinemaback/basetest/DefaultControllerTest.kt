@@ -39,9 +39,6 @@ abstract class DefaultControllerTest {
     @MockBean
     lateinit var userDataDetailsService: UserDataDetailsService
 
-    @MockBean
-    lateinit var userService: UserService
-
     @Autowired
     lateinit var jwtUtil: JwtUtil
 

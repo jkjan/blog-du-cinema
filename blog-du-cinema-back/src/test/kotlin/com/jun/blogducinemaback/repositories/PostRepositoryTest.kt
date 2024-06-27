@@ -163,7 +163,7 @@ class PostRepositoryTest {
 
         // then
         val post2 = postRepository.findById(1).get()
-        val post3 = userRepository.nnnnn("user1").get().posts
+        val post3 = userRepository.findByNaturalId("user1").get().posts
         assertThat(post3).hasSize(1)
         assertThat(post2.title).isEqualTo(post3[0].title)
     }

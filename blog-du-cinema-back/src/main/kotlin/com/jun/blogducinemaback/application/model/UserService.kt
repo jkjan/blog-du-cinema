@@ -26,7 +26,7 @@ class UserService(
 
     @Transactional
     fun signUp(user: UserSignUpDTO): Optional<UserData> {
-        val duplicatedUser = userRepository.nnnnn(user.username)
+        val duplicatedUser = userRepository.findByNaturalId(user.username)
 
         if (duplicatedUser.isEmpty) {
             logger.info("User ${user.username} is not registered.")

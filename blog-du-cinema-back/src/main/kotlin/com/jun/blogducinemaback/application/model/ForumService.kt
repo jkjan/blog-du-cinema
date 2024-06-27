@@ -23,7 +23,7 @@ class ForumService(
 ) {
     @Transactional
     fun createNewPost(forumPostDTO: ForumPostDTO): Boolean {
-        val userData = userRepository.nnnnn(forumPostDTO.username)
+        val userData = userRepository.findByNaturalId(forumPostDTO.username)
 
         if (userData.isPresent) {
             val post = forumPostDTO.toPost()

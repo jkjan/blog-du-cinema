@@ -6,5 +6,5 @@ import java.util.*
 
 @NoRepositoryBean
 interface BaseRepository<T, ID, NID> : JpaRepository<T, ID> {
-    fun nnnnn(nid: NID): Optional<T & Any>
+    fun findByNaturalId(nid: NID): Optional<T & Any>
 }

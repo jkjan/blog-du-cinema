@@ -12,7 +12,7 @@ class UserDataDetailsService(
 ) : UserDetailsService {
 
     override fun loadUserByUsername(username: String): UserData {
-        val user = userRepository.nnnnn(username)
+        val user = userRepository.findByNaturalId(username)
 
         if (user.isPresent)
             return user.get()
