@@ -1,5 +1,6 @@
 package com.jun.blogducinemaback.domain
 
+import com.jun.blogducinemaback.global.types.Role
 import jakarta.persistence.*
 import jakarta.persistence.metamodel.StaticMetamodel
 import org.springframework.security.core.GrantedAuthority
@@ -7,8 +8,12 @@ import org.springframework.security.core.GrantedAuthority
 @Entity
 @StaticMetamodel(Authority::class)
 class Authority(
-    var authorityName: String = "ROLE_USER"
+    final var authorityName: String = "ROLE_USER"
 ): GrantedAuthority{
+    constructor(role: Role) : this() {
+        this.authorityName = role.value
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var authorityId: Int? = null
@@ -18,6 +23,10 @@ class Authority(
     var userData: UserData? = null
 
     override fun getAuthority(): String {
+        return authorityName
+    }
+
+    override fun toString(): String {
         return authorityName
     }
 }

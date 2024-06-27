@@ -1,5 +1,7 @@
 package com.jun.blogducinemaback.domain
 
+import com.jun.blogducinemaback.global.types.Default
+import com.jun.blogducinemaback.global.types.Role
 import jakarta.persistence.*
 import org.hibernate.annotations.NaturalId
 import org.springframework.security.core.GrantedAuthority
@@ -11,6 +13,10 @@ class UserData(
     private var username: String = "unknown",
     private var password: String = "unknown",
 ) : BaseTimeEntity(), UserDetails {
+    constructor(userId: Int, username: String) : this() {
+        this.userId = userId
+        this.username = username
+    }
 
     constructor(username: String, password: String, authority: String) : this() {
         this.username = username
@@ -18,9 +24,17 @@ class UserData(
         this.authorities = mutableListOf(Authority(authority))
     }
 
+    constructor(username: String, password: String, authority: Role) : this() {
+        this.username = username
+        this.password = password
+        this.authorities = mutableListOf(Authority(authority.value))
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    var userId: Int = 1
+    var userId: Int = 0
+
+    var nickname: String = Default.NICKNAME
 
     @OneToMany(cascade = [(CascadeType.ALL)], fetch = FetchType.LAZY, mappedBy = "userData", orphanRemoval = true)
     var posts: MutableList<Post> = mutableListOf()

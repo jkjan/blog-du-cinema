@@ -5,6 +5,7 @@ import com.jun.blogducinemaback.global.utils.logger
 import com.jun.blogducinemaback.application.dto.UserSignInDTO
 import com.jun.blogducinemaback.application.dto.UserSignUpDTO
 import com.jun.blogducinemaback.application.model.UserService
+import org.springframework.cache.annotation.Cacheable
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -13,14 +14,11 @@ import org.springframework.security.authentication.BadCredentialsException
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.validation.annotation.Validated
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 @RestController
 class UserController(
     private val userService: UserService,
-    private val authenticationManager: AuthenticationManager,
     private val jwtUtil: JwtUtil
 ) {
     private val logger = logger()
@@ -67,33 +65,37 @@ class UserController(
         var status: HttpStatus = HttpStatus.BAD_REQUEST
         val headers = HttpHeaders()
         val body: HashMap<String, String> = hashMapOf()
-        lateinit var response: ResponseEntity<HashMap<String, String>>
 
-        try {
-            val token = UsernamePasswordAuthenticationToken(user.username, user.password)
-            val authentication = authenticationManager.authenticate(token)
+        val authentication = userService.signIn(user)
 
+        if (authentication.isPresent) {
             logger.info("로그인 성공")
 
-            val jwtToken = jwtUtil.createJwt(user.username, authentication.authorities.map { it.authority })
+            val jwtToken = jwtUtil.createJwt(user.username, authentication.get().authorities.map { it.authority })
             val cookie = jwtUtil.createCookie(jwtToken)
 
             status = HttpStatus.OK
             headers.set(HttpHeaders.SET_COOKIE, cookie.toString())
             body["message"] = "로그인에 성공하였습니다."
         }
-        catch (e: BadCredentialsException) {
+        else {
             logger.info("로그인 실패")
             status = HttpStatus.UNAUTHORIZED
             body["message"] = "아이디가 존재하지 않거나 비밀번호와 일치하지 않습니다."
         }
-        finally {
-            response = ResponseEntity
-                .status(status)
-                .headers(headers)
-                .body(body)
-        }
+
+        val response: ResponseEntity<HashMap<String, String>> = ResponseEntity
+            .status(status)
+            .headers(headers)
+            .body(body)
 
         return response
+    }
+
+    @GetMapping("/nickname/{username}")
+    fun getNickname(
+        @PathVariable username: String,
+    ): String? {
+        return userService.getNickname(username)
     }
 }

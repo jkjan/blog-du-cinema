@@ -1,11 +1,16 @@
 package com.jun.blogducinemaback.global.config
 
-import com.jun.blogducinemaback.application.model.UserService
 import com.jun.blogducinemaback.adapter.`in`.filter.JwtFilter
+import com.jun.blogducinemaback.adapter.out.persistence.BaseRepositoryImpl
+import com.jun.blogducinemaback.adapter.out.persistence.UserRepository
+import com.jun.blogducinemaback.application.model.UserDataDetailsService
+import com.jun.blogducinemaback.domain.Authority
+import com.jun.blogducinemaback.global.types.Role
 import com.jun.blogducinemaback.global.utils.JwtUtil
+import com.jun.blogducinemaback.global.utils.logger
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import org.springframework.http.HttpMethod
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories
 import org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler
 import org.springframework.security.access.expression.method.MethodSecurityExpressionHandler
 import org.springframework.security.access.hierarchicalroles.RoleHierarchy
@@ -27,7 +32,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 
 @Configuration
 @EnableWebSecurity(debug = true)
-@EnableMethodSecurity
+@EnableMethodSecurity(securedEnabled = true, prePostEnabled = true)
+//@EnableJpaRepositories(basePackages = ["com.jun.blogducinemaback.adapter.out.persistence"], repositoryBaseClass = BaseRepositoryImpl::class)
 class SecurityConfig(private val jwtUtil: JwtUtil) {
     @Bean
     fun securityFilterChain(http: HttpSecurity): SecurityFilterChain {
@@ -38,6 +44,12 @@ class SecurityConfig(private val jwtUtil: JwtUtil) {
             csrf {
                 disable()
             }
+//
+//            authorizeHttpRequests {
+////                authorize(HttpMethod.POST, "/forum", hasRole("ADMIN"))
+//                authorize("/**", permitAll)
+//            }
+
             sessionManagement {
                 sessionCreationPolicy = SessionCreationPolicy.STATELESS
             }
@@ -55,11 +67,11 @@ class SecurityConfig(private val jwtUtil: JwtUtil) {
 
     @Bean
     fun authenticationManager(
-        userDetailsService: UserService,
+        userDataDetailsService: UserDataDetailsService,
         passwordEncoder: Pbkdf2PasswordEncoder
     ): AuthenticationManager {
         val authenticationProvider = DaoAuthenticationProvider()
-        authenticationProvider.setUserDetailsService(userDetailsService)
+        authenticationProvider.setUserDetailsService(userDataDetailsService)
         authenticationProvider.setPasswordEncoder(passwordEncoder)
         val providerManager = ProviderManager(authenticationProvider)
         return providerManager
@@ -76,6 +88,8 @@ class SecurityConfig(private val jwtUtil: JwtUtil) {
     fun methodSecurityExpressionHandler(roleHierarchy: RoleHierarchy?): MethodSecurityExpressionHandler {
         val expressionHandler = DefaultMethodSecurityExpressionHandler()
         expressionHandler.setRoleHierarchy(roleHierarchy)
+        val a = roleHierarchy!!.getReachableGrantedAuthorities(listOf(Authority(Role.USER.value)))
+        logger().info("role Hierarchy: $a")
         return expressionHandler
     }
 

@@ -19,6 +19,7 @@ interface ComponentData {
 
 interface UserData {
   username: string;
+  nickname: string;
   profileImage?: string;
 }
 

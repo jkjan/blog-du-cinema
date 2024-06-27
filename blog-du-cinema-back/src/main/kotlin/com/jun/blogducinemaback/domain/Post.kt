@@ -9,7 +9,7 @@ class Post (
 ) : BaseTimeEntity() {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    var postId: Int? = null
+    var postId: Int = 0
 
     @ManyToOne(cascade = [(CascadeType.ALL)], fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")

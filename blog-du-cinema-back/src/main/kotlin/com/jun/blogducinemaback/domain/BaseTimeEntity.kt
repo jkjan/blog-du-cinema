@@ -1,5 +1,6 @@
 package com.jun.blogducinemaback.domain
 
+import com.jun.blogducinemaback.global.types.Default
 import jakarta.persistence.Column
 import jakarta.persistence.MappedSuperclass
 import org.springframework.data.annotation.CreatedDate
@@ -12,9 +13,9 @@ import java.time.LocalDateTime
 abstract class BaseTimeEntity {
     @CreatedDate
     @Column(insertable = false, updatable = false)
-    var createdAt: LocalDateTime? = null
+    var createdAt: LocalDateTime = Default.DATETIME
 
     @LastModifiedDate
     @Column(insertable = false, updatable = false)
-    var modifiedAt: LocalDateTime? = null
+    var modifiedAt: LocalDateTime = Default.DATETIME
 }
