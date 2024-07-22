@@ -1,71 +1,59 @@
 package com.jun.blogducinemaback.adapter.`in`.api
 
+import com.jun.blogducinemaback.application.dto.request.PostRequestDTO
 import com.jun.blogducinemaback.global.utils.logger
-import com.jun.blogducinemaback.application.dto.InfoLabelDTO
-import com.jun.blogducinemaback.application.dto.InfoPostDTO
+import com.jun.blogducinemaback.application.dto.response.InfoLabelDTO
+import com.jun.blogducinemaback.application.dto.response.PostListDTO
+import com.jun.blogducinemaback.application.model.PostService
 import com.jun.blogducinemaback.application.model.InfoService
+import org.springframework.data.domain.Page
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.RequestHeader
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.security.access.prepost.PreAuthorize
+import org.springframework.web.bind.annotation.*
 
+@RequestMapping("/info")
 @RestController
-class InfoController(val infoService: InfoService) {
-    private val logger = logger()
+class InfoController(
+    val infoService: InfoService,
+    val postService: PostService
+) {
+    @GetMapping("/label")
+    fun getInfoLabels(): ResponseEntity<List<InfoLabelDTO>> =
+        ResponseEntity
+            .status(HttpStatus.OK)
+            .body(infoService.getInfoLabels())
 
-    @GetMapping("/info/label")
-    fun getInfoLabels(@RequestHeader("Origin") origin: String?): ResponseEntity<List<InfoLabelDTO>> {
-        val labelService = infoService.getInfoLabels()
+    @PostMapping("/post")
+    @PreAuthorize("hasRole('ADMIN')")
+    fun createNewInfoPost(
+        @RequestBody
+        post: PostRequestDTO
+    ): ResponseEntity<Void> {
+        val createdNewPost = postService.createNewPost(post)
 
-        logger.info("request origin: $origin")
-        logger.info("All labels requested for info.")
-
-        lateinit var status: HttpStatus
-        val headers = HttpHeaders()
-        val body: List<InfoLabelDTO>?
-
-        if (labelService.isEmpty()) {
-            logger.info("No labels in Label table or failed to retrieve from db.")
-            status = HttpStatus.NO_CONTENT
-            body = emptyList()
-        } else {
-            logger.info("Found ${labelService.size} labels in Label table.")
-            status = HttpStatus.OK
-            body = labelService
-        }
-
-        val response = ResponseEntity
-                .status(status)
-                .headers(headers)
-                .body(body)
-
-        return response
+        return if (createdNewPost)
+            ResponseEntity
+                .status(HttpStatus.CREATED)
+                .build()
+        else
+            ResponseEntity
+                .status(HttpStatus.FORBIDDEN)
+                .build()
     }
 
-    @GetMapping("/info/post/{labelId}")
-    fun getPostsForLabel(@PathVariable labelId: Int): ResponseEntity<List<InfoPostDTO>> {
-        val posts = infoService.getPostsForLabel(labelId)
+    @GetMapping("/post/{labelId}")
+    fun getPostsForLabel(@PathVariable labelId: Int, @RequestBody lastPostId: Int): ResponseEntity<PostListDTO> {
+        val posts = postService.getPostListForLabel(listOf(labelId), lastPostId)
 
-        lateinit var status: HttpStatus
-        val headers = HttpHeaders()
-        lateinit var body: List<InfoPostDTO>
-
-        if (posts.isEmpty()) {
-            status = HttpStatus.NO_CONTENT
-            body = emptyList()
-        } else {
-            status = HttpStatus.OK
-            body = posts
-        }
-
-        val response = ResponseEntity
-            .status(status)
-            .headers(headers)
-            .body(body)
-
-        return response
+        return if (posts.isPresent)
+            ResponseEntity
+                .status(HttpStatus.OK)
+                .body(posts.get())
+        else
+            ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(PostListDTO(Page.empty()))
     }
 }

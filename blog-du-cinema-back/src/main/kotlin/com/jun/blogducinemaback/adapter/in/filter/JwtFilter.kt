@@ -17,7 +17,6 @@ class JwtFilter(private val jwtUtil: JwtUtil): OncePerRequestFilter() {
         response: HttpServletResponse,
         filterChain: FilterChain
     ) {
-        //request에서 Authorization 헤더를 찾음
         var jwtToken = ""
 
         if (request.cookies != null) {
@@ -29,11 +28,9 @@ class JwtFilter(private val jwtUtil: JwtUtil): OncePerRequestFilter() {
             }
         }
 
-        //Authorization 헤더 검증
         if (jwtToken.isEmpty()) {
             logger.info("token is null.")
 
-            //조건이 해당되면 메소드 종료 (필수)
             filterChain.doFilter(request, response)
             return
         }
@@ -58,7 +55,6 @@ class JwtFilter(private val jwtUtil: JwtUtil): OncePerRequestFilter() {
             val authToken: Authentication =
                 UsernamePasswordAuthenticationToken(username, jwtToken, authorities)
 
-            //세션에 사용자 등록
             SecurityContextHolder.getContext().authentication = authToken
 
         } catch (e: JwtException) {

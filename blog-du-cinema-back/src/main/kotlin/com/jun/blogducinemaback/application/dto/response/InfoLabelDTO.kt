@@ -1,4 +1,4 @@
-package com.jun.blogducinemaback.application.dto
+package com.jun.blogducinemaback.application.dto.response
 
 import com.google.gson.Gson
 import com.jun.blogducinemaback.domain.Label
@@ -14,9 +14,5 @@ class InfoLabelDTO(label: Label) {
         this.labelNum = label.labelNum
         this.labelName = label.labelName
         this.category = label.category
-    }
-
-    override fun toString() : String {
-        return Gson().toJson(this).toString()
     }
 }

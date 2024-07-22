@@ -1,16 +1,16 @@
 package com.jun.blogducinemaback.domain
 
+import com.jun.blogducinemaback.global.types.Default
 import jakarta.persistence.*
 
 @Entity
 class Label(
-    var labelNum: Int = 0,
-    var labelName: String = "unknown",
-    var category: String = "unknown"
-) : BaseTimeEntity() {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    var labelId: Int? = null
+    var labelId: Int? = 0,
+    var labelNum: Int = 0,
+    var labelName: String = Default.LABEL_NAME,
+) : BaseTimeEntity() {
 
     @OneToMany(cascade = [(CascadeType.ALL)], mappedBy = "label", fetch = FetchType.LAZY)
     var postLabel: MutableList<PostLabel> = mutableListOf()

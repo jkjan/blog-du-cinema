@@ -1,6 +1,5 @@
 package com.jun.blogducinemaback
 
-import com.jun.blogducinemaback.application.dto.UserSignInDTO
 import com.jun.blogducinemaback.global.properties.JwtProperties
 import com.jun.blogducinemaback.global.types.Role
 import com.jun.blogducinemaback.global.types.TimeUnit
@@ -12,10 +11,8 @@ import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
-import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.context.annotation.Import
 import org.springframework.test.web.servlet.MockMvc
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 
 
 @WebMvcTest
